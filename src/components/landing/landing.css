@@ -1,125 +1,185 @@
+/* ══ LANDING ══ */
 .landing {
     background-color: #f2f0f1;
-    min-width: 100%;
-    min-height: 100vh;
-    padding-top: 70px;
+    width: 100%;
+    overflow: hidden;
 }
 
-.landing .container>div {
+/* ══ HERO ══ */
+.landing-hero {
+    display: flex;
+    align-items: stretch;
+    min-height: 75vh;
+    position: relative;
+}
+
+/* ══ LEFT: CONTENT ══ */
+.hero-content {
+    flex: 0 0 50%;
     max-width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px 48px 60px 60px;
+    position: relative;
+    z-index: 2;
 }
 
+/* ══ DECORATIVE STARS ══ */
+.deco-star {
+    font-family: serif;
+    color: #111;
+    line-height: 1;
+    user-select: none;
+    pointer-events: none;
+}
+
+.deco-star--sm {
+    position: absolute;
+    top: 48px;
+    right: 32px;
+    font-size: 28px;
+}
+
+.deco-star--lg {
+    position: absolute;
+    top: 38%;
+    left: -18px;
+    font-size: 44px;
+    z-index: 3;
+}
+
+/* ══ HEADING ══ */
 .landing-heading {
-    font-size: 45px;
+    font-size: clamp(32px, 4.2vw, 58px);
     font-weight: 900;
     font-family: "Archivo Black", sans-serif;
-    width: 505px;
-    line-height: 1;
-    margin-bottom: 15px;
+    line-height: 1.0;
+    margin-bottom: 20px;
     letter-spacing: -2px;
+    color: #111;
 }
 
-.landing img {
-    width: 525px;
-}
-
-
-
+/* ══ SUBTEXT ══ */
 .subtext {
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     color: #666;
-    line-height: 1.6;
-
+    line-height: 1.7;
     margin-bottom: 28px;
+    max-width: 380px;
 }
 
+/* ══ CTA ══ */
 .btnShop {
-    display: inline-block;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
     background-color: #111;
     color: #fff;
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
+    font-size: 0.85rem;
     font-weight: 500;
     letter-spacing: 0.03em;
-    padding: 13px 26px;
+    padding: 14px 36px;
     border-radius: 50px;
     border: none;
     cursor: pointer;
     text-decoration: none;
     transition: background 0.2s, transform 0.15s;
-    width: 170px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: fit-content;
+    margin-bottom: 36px;
 }
 
 .btnShop:hover {
     background: #333;
+    color: #fff;
     transform: translateY(-1px);
 }
 
+/* ══ STATS ══ */
 .stats {
     display: flex;
     align-items: center;
     gap: 0;
-    z-index: 2;
-    position: relative;
-    margin-top: 36px;
+    flex-wrap: wrap;
+    row-gap: 16px;
 }
 
 .stat-item {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    padding-right: 40px;
-
+    padding: 0 28px;
 }
 
-.stat-item+.stat-item {
-    padding-left: 40px;
-    padding-right: 40px;
-    border-left: 1px solid #ccc;
+.stat-item:first-child {
+    padding-left: 0;
 }
 
 .stat-item:last-child {
     padding-right: 0;
 }
 
+.stat-divider {
+    width: 1px;
+    height: 44px;
+    background: #ccc;
+    flex-shrink: 0;
+}
+
 .stat-number {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.9rem;
-    color: #111;
-    letter-spacing: 0.02em;
-    line-height: 1;
     font-family: "Archivo Black", sans-serif;
+    font-size: clamp(1.4rem, 2.2vw, 2rem);
+    color: #111;
+    line-height: 1;
 }
 
 .stat-label {
-    font-size: 0.7rem;
-    color: #888;
+    font-size: 0.68rem;
+    color: #999;
     font-weight: 500;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.03em;
 }
 
+/* ══ RIGHT: IMAGE ══ */
+.hero-image-wrap {
+    flex: 0 0 50%;
+    max-width: 50%;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
+}
 
+.hero-image-wrap img {
+    width: 100%;
+    height: 100%;
+    max-height: calc(100vh - 70px);
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+}
+
+/* ══ BRANDS BAR ══ */
 .brands-bar {
-    height: 100px;
     background: #111;
     display: flex;
     align-items: center;
     justify-content: space-around;
-    padding: 18px 40px;
+    padding: 22px 60px;
     gap: 16px;
+    overflow: hidden;
 }
 
 .brand-name {
     color: #fff;
-    font-size: 27px;
+    font-size: clamp(15px, 2vw, 26px);
     font-weight: 400;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     white-space: nowrap;
-    opacity: 0.85;
+    opacity: 0.9;
     transition: opacity 0.2s;
     cursor: default;
 }
@@ -129,13 +189,137 @@
 }
 
 .brand-name.bold {
-    font-weight: 700;
+    font-weight: 800;
     opacity: 1;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
 }
 
-/* ZARA italic serif style */
 .brand-name.zara {
     font-style: italic;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.15em;
+}
+
+/* ══════════════════════════════
+   RESPONSIVE — TABLET
+══════════════════════════════ */
+@media (max-width: 900px) {
+    .landing-hero {
+        min-height: auto;
+    }
+
+    .hero-content {
+        flex: 0 0 55%;
+        max-width: 55%;
+        padding: 48px 32px 48px 32px;
+    }
+
+    .hero-image-wrap {
+        flex: 0 0 45%;
+        max-width: 45%;
+    }
+
+    .stat-item {
+        padding: 0 18px;
+    }
+}
+
+/* ══════════════════════════════
+   RESPONSIVE — MOBILE
+══════════════════════════════ */
+@media (max-width: 640px) {
+    .landing-hero {
+        flex-direction: column;
+        min-height: auto;
+    }
+
+    /* Content goes on top */
+    .hero-content {
+        flex: none;
+        max-width: 100%;
+        width: 100%;
+        padding: 40px 20px 28px;
+        order: 1;
+    }
+
+    .deco-star--sm {
+        top: 24px;
+        right: 20px;
+        font-size: 22px;
+    }
+
+    .deco-star--lg {
+        display: none;
+    }
+
+    .landing-heading {
+        font-size: clamp(30px, 9vw, 42px);
+        letter-spacing: -1px;
+        margin-bottom: 14px;
+    }
+
+    .subtext {
+        font-size: 0.78rem;
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .btnShop {
+        width: 100%;
+        padding: 14px;
+        margin-bottom: 28px;
+    }
+
+    .stats {
+        flex-wrap: wrap;
+        row-gap: 12px;
+    }
+
+    .stat-item {
+        padding: 0 16px;
+    }
+
+    /* Image goes below */
+    .hero-image-wrap {
+        flex: none;
+        max-width: 100%;
+        width: 100%;
+        height: 55vw;
+        min-height: 260px;
+        order: 2;
+    }
+
+    .hero-image-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top center;
+        max-height: none;
+    }
+
+    /* Brands bar - scrollable */
+    .brands-bar {
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding: 18px 20px;
+        gap: 32px;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .brands-bar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .brand-name {
+        font-size: 17px;
+        flex-shrink: 0;
+    }
+
+    .stats {
+        justify-content: center;
+    }
+
+    .stat-divider2 {
+        width: 0;
+    }
 }

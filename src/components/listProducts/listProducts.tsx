@@ -17,7 +17,7 @@ const ListProducts = () => {
     const page = Number(searchParams.get("page")) || 1
     const category = searchParams.get("category") || ""
     const type = searchParams.get("type") || ""
-
+    const [filtersOpen, setFiltersOpen] = useState(false)
     useEffect(() => {
         fetch(`${import.meta.env.VITE_API_URL}/categories`).then(data => data.json()).then(data => {
             setCatigories(data.data)
@@ -40,6 +40,15 @@ const ListProducts = () => {
             top: 0
         })
     }, [page, sort, category, type])
+
+
+
+
+
+    useEffect(() => {
+        document.body.style.overflow = filtersOpen ? 'hidden' : ''
+        return () => { document.body.style.overflow = '' }
+    }, [filtersOpen])
     return (
         <>
             <div className='container'>
@@ -50,20 +59,32 @@ const ListProducts = () => {
 
                 <div className="shop-layout">
 
+                    <div
+                        className={`filter-overlay ${filtersOpen ? 'active' : ''}`}
+                        onClick={() => setFiltersOpen(false)}
+                    />
 
-                    <aside className="sidebar">
+                    <aside className={`sidebar ${filtersOpen ? 'open' : ''}`}>
                         <div className="sidebar-header">
                             <h3>Filters</h3>
-
-                            <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <line x1="0" y1="2" x2="18" y2="2" stroke="#111" stroke-width="1.5" />
-                                <circle cx="5" cy="2" r="2" fill="#fff" stroke="#111" stroke-width="1.5" />
-                                <line x1="0" y1="7" x2="18" y2="7" stroke="#111" stroke-width="1.5" />
-                                <circle cx="13" cy="7" r="2" fill="#fff" stroke="#111" stroke-width="1.5" />
-                                <line x1="0" y1="12" x2="18" y2="12" stroke="#111" stroke-width="1.5" />
-                                <circle cx="7" cy="12" r="2" fill="#fff" stroke="#111" stroke-width="1.5" />
-                            </svg>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <line x1="0" y1="2" x2="18" y2="2" stroke="#111" strokeWidth="1.5" />
+                                    <circle cx="5" cy="2" r="2" fill="#fff" stroke="#111" strokeWidth="1.5" />
+                                    <line x1="0" y1="7" x2="18" y2="7" stroke="#111" strokeWidth="1.5" />
+                                    <circle cx="13" cy="7" r="2" fill="#fff" stroke="#111" strokeWidth="1.5" />
+                                    <line x1="0" y1="12" x2="18" y2="12" stroke="#111" strokeWidth="1.5" />
+                                    <circle cx="7" cy="12" r="2" fill="#fff" stroke="#111" strokeWidth="1.5" />
+                                </svg>
+                                {/* Close btn - mobile only */}
+                                <button className="sidebar-close-btn" onClick={() => setFiltersOpen(false)}>
+                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                                        <path d="M1 1l12 12M13 1L1 13" stroke="#111" strokeWidth="1.6" strokeLinecap="round" />
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
+
 
 
                         <div className="filter-section">
@@ -184,7 +205,7 @@ const ListProducts = () => {
                             </ul>
                         </div>
 
-                        <button className="apply-btn">Apply Filter</button>
+                        <button className="apply-btn" onClick={() => setFiltersOpen(false)}>Apply Filter</button>
                     </aside>
 
 
@@ -192,15 +213,42 @@ const ListProducts = () => {
 
                         <div className="content-header">
                             <h1>Casual</h1>
+                            <span className="mobile-result-count">{results} of {totalProducts} Products</span>
                             <div className="sort-meta">
                                 <span className="result-count">Showing {results} of {totalProducts} Products</span>
                                 <span style={{ fontSize: "0.78rem; color:var(--gray-text)" }}>Sort by:</span>
-                                <select className="sort-select">
-                                    <option>Most Popular</option>
+                                <select className="sort-select" value={sort || ""} onChange={(e) => {
+                                    const params = Object.fromEntries(searchParams.entries());
+                                    setSearchParams({
+                                        ...params,
+                                        sort: e.target.value.split("Price: ")[1],
+                                        page: "1"
+                                    });
+                                }}>
+                                    <option onClick={(e) => {
+                                        const params = Object.fromEntries(searchParams.entries());
+                                        setSearchParams({
+                                            ...params,
+                                            sort: e.currentTarget.innerText,
+                                            type: "",
+                                            page: "1"
+                                        });
+                                    }}>Most Popular</option>
                                     <option>Newest</option>
                                     <option>Price: Low to High</option>
                                     <option>Price: High to Low</option>
                                 </select>
+                                <button className="filter-trigger-btn" onClick={() => setFiltersOpen(true)}>
+                                    <svg width="16" height="13" viewBox="0 0 18 14" fill="none">
+                                        <line x1="0" y1="2" x2="18" y2="2" stroke="#111" strokeWidth="1.5" />
+                                        <circle cx="5" cy="2" r="2" fill="#fff" stroke="#111" strokeWidth="1.5" />
+                                        <line x1="0" y1="7" x2="18" y2="7" stroke="#111" strokeWidth="1.5" />
+                                        <circle cx="13" cy="7" r="2" fill="#fff" stroke="#111" strokeWidth="1.5" />
+                                        <line x1="0" y1="12" x2="18" y2="12" stroke="#111" strokeWidth="1.5" />
+                                        <circle cx="7" cy="12" r="2" fill="#fff" stroke="#111" strokeWidth="1.5" />
+                                    </svg>
+                                    Filters
+                                </button>
                             </div>
                         </div>
 
