@@ -1,0 +1,128 @@
+.section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.6rem;
+    letter-spacing: 0.04em;
+    color: #111;
+    text-align: center;
+    margin-bottom: 36px;
+    font-family: "Archivo Black", sans-serif;
+}
+
+/* ── Product Card ── */
+.product-card {
+    border: none;
+    border-radius: 14px;
+    background: transparent;
+}
+
+.product-img-wrap {
+    background: #f2f1ed;
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 260px;
+    margin-bottom: 16px;
+    transition: background 0.2s;
+}
+
+.product-img-wrap:hover {
+    background: #e8e7e2;
+}
+
+.product-img-wrap img {
+    max-height: 220px;
+    max-width: 90%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.product-img-wrap:hover img {
+    transform: scale(1.04);
+}
+
+.product-name {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 4px;
+}
+
+/* Stars */
+.stars {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-bottom: 6px;
+}
+
+.star-icon {
+    color: #f5a623;
+    font-size: 0.8rem;
+}
+
+.star-icon.half {
+    color: #f5a623;
+    opacity: 0.5;
+}
+
+.rating-text {
+    font-size: 0.7rem;
+    color: #999;
+    margin-left: 4px;
+}
+
+/* Price */
+.price-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.price-current-home {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111;
+    font-family: "Archivo Black", sans-serif;
+}
+
+.price-old {
+    font-size: 0.85rem;
+    color: #aaa;
+    text-decoration: line-through;
+    font-family: "Archivo Black", sans-serif;
+}
+
+.badge-discount {
+    background: #ffe0e0;
+    color: #e53935;
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.02em;
+}
+
+/* View All Button */
+.btn-view-all {
+    display: block;
+    margin: 40px auto 0;
+    background: transparent;
+    border: 1.5px solid #ccc;
+    color: #111;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 11px 36px;
+    border-radius: 50px;
+    width: fit-content;
+    transition: border-color 0.2s, background 0.2s;
+    text-decoration: none;
+}
+
+.btn-view-all:hover {
+    border-color: #111;
+    background: #111;
+    color: #fff;
+}

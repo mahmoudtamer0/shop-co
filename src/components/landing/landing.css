@@ -1,0 +1,141 @@
+.landing {
+    background-color: #f2f0f1;
+    min-width: 100%;
+    min-height: 100vh;
+    padding-top: 70px;
+}
+
+.landing .container>div {
+    max-width: 50%;
+}
+
+.landing-heading {
+    font-size: 45px;
+    font-weight: 900;
+    font-family: "Archivo Black", sans-serif;
+    width: 505px;
+    line-height: 1;
+    margin-bottom: 15px;
+    letter-spacing: -2px;
+}
+
+.landing img {
+    width: 525px;
+}
+
+
+
+.subtext {
+    font-size: 0.78rem;
+    color: #666;
+    line-height: 1.6;
+
+    margin-bottom: 28px;
+}
+
+.btnShop {
+    display: inline-block;
+    background-color: #111;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    padding: 13px 26px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    width: 170px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btnShop:hover {
+    background: #333;
+    transform: translateY(-1px);
+}
+
+.stats {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    z-index: 2;
+    position: relative;
+    margin-top: 36px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-right: 40px;
+
+}
+
+.stat-item+.stat-item {
+    padding-left: 40px;
+    padding-right: 40px;
+    border-left: 1px solid #ccc;
+}
+
+.stat-item:last-child {
+    padding-right: 0;
+}
+
+.stat-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.9rem;
+    color: #111;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    font-family: "Archivo Black", sans-serif;
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    color: #888;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+}
+
+
+.brands-bar {
+    height: 100px;
+    background: #111;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 18px 40px;
+    gap: 16px;
+}
+
+.brand-name {
+    color: #fff;
+    font-size: 27px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0.85;
+    transition: opacity 0.2s;
+    cursor: default;
+}
+
+.brand-name:hover {
+    opacity: 1;
+}
+
+.brand-name.bold {
+    font-weight: 700;
+    opacity: 1;
+    letter-spacing: 0.08em;
+}
+
+/* ZARA italic serif style */
+.brand-name.zara {
+    font-style: italic;
+    letter-spacing: 0.18em;
+}

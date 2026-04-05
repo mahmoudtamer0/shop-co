@@ -1,0 +1,262 @@
+.newsletter-section {
+    position: relative;
+    z-index: 2;
+    /* sits on top of footer */
+    padding: 0 20px;
+    margin-top: 60px;
+}
+
+.newsletter-banner {
+    background: #111;
+    border-radius: 20px;
+    padding: 25px 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    margin: 0 auto;
+    word-spacing: -3px;
+}
+
+.newsletter-heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.4rem;
+    color: #fff;
+    line-height: 1.05;
+    letter-spacing: -1px;
+    flex: 1;
+    font-family: "Archivo Black", sans-serif;
+}
+
+.newsletter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 340px;
+    flex-shrink: 0;
+}
+
+.newsletter-input-wrap {
+    position: relative;
+}
+
+.newsletter-input-wrap .mail-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    opacity: 0.45;
+}
+
+.newsletter-input {
+    width: 100%;
+    background: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 13px 20px 13px 46px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    color: #111;
+    outline: none;
+}
+
+.newsletter-input::placeholder {
+    color: #aaa;
+}
+
+.newsletter-btn {
+    background: #fff;
+    color: #111;
+    border: none;
+    border-radius: 50px;
+    padding: 13px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: background 0.2s;
+    width: 100%;
+}
+
+.newsletter-btn:hover {
+    background: #e0e0e0;
+}
+
+/* ════════════════════════════
+     FOOTER
+     negative margin-top pulls it
+     up so banner overlaps the top
+  ════════════════════════════ */
+.footer-body {
+    background: #f2f0f1;
+    margin-top: -40px;
+    /* pull up behind banner */
+    padding-top: 100px;
+    /* push content below banner */
+    position: relative;
+    z-index: 1;
+}
+
+.footer-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 20px 48px;
+}
+
+/* Brand */
+.footer-brand-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.9rem;
+    letter-spacing: -1px;
+    color: #111;
+    margin-bottom: 12px;
+    font-family: "Archivo Black", sans-serif;
+}
+
+.footer-tagline {
+    font-size: 0.78rem;
+    color: #777;
+    line-height: 1.65;
+    max-width: 200px;
+    margin-bottom: 20px;
+}
+
+/* Social */
+.social-icons {
+    display: flex;
+    gap: 10px;
+}
+
+.social-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1.5px solid #ccc;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    text-decoration: none;
+}
+
+.social-btn:hover {
+    background: #111;
+    border-color: #111;
+    color: #fff;
+}
+
+.social-btn svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+}
+
+/* Nav columns */
+.footer-col-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #111;
+    margin-bottom: 18px;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+}
+
+.footer-links li a {
+    font-size: 0.82rem;
+    color: #666;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.footer-links li a:hover {
+    color: #111;
+}
+
+/* Divider */
+.footer-divider {
+    border: none;
+    border-top: 1px solid #e2e2e2;
+    margin: 0;
+}
+
+/* Bottom bar */
+.footer-bottom {
+    margin: 0 auto;
+    padding: 20px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.footer-copy {
+    font-size: 0.75rem;
+    color: #aaa;
+}
+
+.payment-icons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pay-badge {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+}
+
+.pay-badge.visa {
+    color: #1a1f71;
+}
+
+.pay-badge.mc {
+    color: #eb001b;
+}
+
+.pay-badge.paypal {
+    color: #003087;
+}
+
+.pay-badge.apple {
+    color: #111;
+}
+
+.pay-badge.gpay {
+    color: #4285f4;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .newsletter-banner {
+        flex-direction: column;
+        padding: 32px 24px;
+    }
+
+    .newsletter-form {
+        width: 100%;
+    }
+
+    .newsletter-heading {
+        font-size: 1.9rem;
+    }
+}

@@ -1,0 +1,66 @@
+.style-section {
+    background: #e9e9e9;
+    border-radius: 20px;
+    padding: 48px 40px;
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.4rem;
+    color: #111;
+    text-align: center;
+    margin-bottom: 32px;
+    font-family: "Archivo Black", sans-serif;
+    letter-spacing: -2px;
+}
+
+/* ── Style Card ── */
+.style-card {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #fff;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+}
+
+.style-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.style-card:hover img {
+    transform: scale(1.05);
+}
+
+.style-card .card-label {
+    position: absolute;
+    top: 16px;
+    left: 20px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111;
+    letter-spacing: 0.01em;
+    z-index: 2;
+}
+
+/* Row 1: left card taller, right card shorter */
+.card-tall {
+    height: 220px;
+}
+
+.card-wide {
+    height: 220px;
+}
+
+/* Row 2: both same height */
+.card-bottom {
+    height: 240px;
+}
