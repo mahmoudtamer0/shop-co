@@ -10,6 +10,9 @@ const ProductDetails = () => {
     const [mainImg, setMainImg] = useState(0)
 
     useEffect(() => {
+        window.scrollTo({
+            top: 0
+        })
         fetch(`${import.meta.env.VITE_API_URL}/products/${prodId}`)
             .then(data => data.json())
             .then(data => setProduct(data.data))
