@@ -16,7 +16,7 @@ const ProductDetails = () => {
         fetch(`${import.meta.env.VITE_API_URL}/products/${prodId}`)
             .then(data => data.json())
             .then(data => setProduct(data.data))
-    }, [])
+    }, [prodId])
 
     return (
         <div className="container">
@@ -95,7 +95,7 @@ const ProductDetails = () => {
                 </div>
             </section>
 
-
+            <ProductsHome heading='YOU ALSO MIGHT LIKE' filter='' />
             <div className="tabs-section">
                 <div className="tabs">
                     <div className="tab">Product Details</div>
@@ -195,7 +195,7 @@ const ProductDetails = () => {
                 </div>
             </div>
 
-            <ProductsHome heading='YOU ALSO MIGHT LIKE' filter='' />
+
         </div>
     )
 }

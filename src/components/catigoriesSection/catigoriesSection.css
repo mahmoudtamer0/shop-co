@@ -46,9 +46,12 @@
     left: 20px;
     font-size: 1rem;
     font-weight: 700;
-    color: #111;
     letter-spacing: 0.01em;
     z-index: 2;
+    background-color: black;
+    color: white;
+    padding: 3px 12px;
+    border-radius: 20px;
 }
 
 /* Row 1: left card taller, right card shorter */
@@ -63,4 +66,26 @@
 /* Row 2: both same height */
 .card-bottom {
     height: 240px;
+}
+
+@media(min-width:900px) {
+    .style-section {
+        width: 1000px !important;
+    }
+}
+
+@media (max-width:790px) {
+    .style-card .card-label {
+        position: absolute;
+        top: 8px;
+        left: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+        z-index: 2;
+        background-color: black;
+        color: white;
+        padding: 1px 9px;
+        border-radius: 20px;
+    }
 }

@@ -29,11 +29,15 @@ const Nav = () => {
         return () => window.removeEventListener('resize', handleResize)
     }, [])
 
-    // Prevent body scroll when menu is open
     useEffect(() => {
         document.body.style.overflow = menuOpen ? 'hidden' : ''
         return () => { document.body.style.overflow = '' }
     }, [menuOpen])
+
+    const handleResultClick = () => {
+        setShowResults(false)
+        setSearch("")
+    }
 
     return (
         <>
@@ -56,7 +60,11 @@ const Nav = () => {
                         <i className="fa-solid fa-magnifying-glass search-icon-inside"></i>
                         <input
                             onFocus={() => setShowResults(true)}
-                            onBlur={() => setTimeout(() => setShowResults(false), 150)}
+                            onBlur={(e) => {
+                                if (!e.currentTarget.closest('.nav-inp-div')?.contains(e.relatedTarget as Node)) {
+                                    setShowResults(false)
+                                }
+                            }}
                             onChange={(e) => setSearch(e.target.value)}
                             type='text'
                             placeholder='Search for products'
@@ -67,7 +75,7 @@ const Nav = () => {
                                 {results.length > 0 ? (
                                     <ul className="search-results-list">
                                         {results.map((item) => (
-                                            <li key={item._id} className="search-result-item">
+                                            <Link to={`/products/${item._id}`} key={item._id} className="search-result-item" onClick={handleResultClick} >
                                                 <div className="result-img">
                                                     <img src={item.productImages[0].url} alt={item.title} />
                                                 </div>
@@ -79,7 +87,7 @@ const Nav = () => {
                                                     <span className="price-now">${item.finalPrice}</span>
                                                     {item.originalPrice && <span className="price-old">${item.originalPrice}</span>}
                                                 </div>
-                                            </li>
+                                            </Link>
                                         ))}
                                     </ul>
                                 ) : (
@@ -95,7 +103,7 @@ const Nav = () => {
                     </div>
 
                     <div className='nav-icons-div'>
-                        <div><i className="fa-solid fa-cart-shopping"></i></div>
+                        <Link style={{ textDecoration: "none", color: "black" }} to={"/cart"}><i className="fa-solid fa-cart-shopping"></i></Link>
                         <div><i className="fa-regular fa-circle-user"></i></div>
                     </div>
 
@@ -125,7 +133,11 @@ const Nav = () => {
                         <i className="fa-solid fa-magnifying-glass"></i>
                         <input
                             onFocus={() => setShowResults(true)}
-                            onBlur={() => setTimeout(() => setShowResults(false), 150)}
+                            onBlur={(e) => {
+                                if (!e.currentTarget.closest('.mobile-search-bar')?.contains(e.relatedTarget as Node)) {
+                                    setShowResults(false)
+                                }
+                            }}
                             onChange={(e) => setSearch(e.target.value)}
                             type='text'
                             placeholder='Search for products'
@@ -136,7 +148,7 @@ const Nav = () => {
                             {results.length > 0 ? (
                                 <ul className="search-results-list">
                                     {results.map((item) => (
-                                        <li key={item._id} className="search-result-item">
+                                        <Link to={`/products/${item._id}`} key={item._id} className="search-result-item" >
                                             <div className="result-img">
                                                 <img src={item.productImages[0].url} alt={item.title} />
                                             </div>
@@ -147,7 +159,7 @@ const Nav = () => {
                                                 <span className="price-now">${item.finalPrice}</span>
                                                 {item.originalPrice && <span className="price-old">${item.originalPrice}</span>}
                                             </div>
-                                        </li>
+                                        </Link>
                                     ))}
                                 </ul>
                             ) : (

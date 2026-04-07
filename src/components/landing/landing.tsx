@@ -1,15 +1,13 @@
 import React from 'react'
 import './landing.css'
 import landingImage from '../../assets/image-Photoroom.png';
+import { Link } from 'react-router-dom';
 
 const Landing = () => {
     return (
         <div className='landing'>
             <div className='landing-hero'>
-                {/* Left: Text Content */}
                 <div className='hero-content'>
-                    {/* Decorative star - top right of text area */}
-                    <span className="deco-star deco-star--sm">✦</span>
 
                     <h1 className='landing-heading'>
                         FIND CLOTHES THAT MATCHES YOUR STYLE
@@ -20,7 +18,7 @@ const Landing = () => {
                         designed to bring out your individuality and cater to your sense of style.
                     </p>
 
-                    <a href="#" className="btnShop">Shop Now</a>
+                    <Link to="/products" className="btnShop">Shop Now</Link>
 
                     <div className="stats">
                         <div className="stat-item">
@@ -40,14 +38,13 @@ const Landing = () => {
                     </div>
                 </div>
 
-                {/* Right: Image */}
                 <div className='hero-image-wrap'>
-                    <span className="deco-star deco-star--lg">✦</span>
+                    <span className="deco-star deco-star--lg mediumStar">✦</span>
                     <img src={landingImage} alt="Fashion models" />
+                    <span className="deco-star deco-star--sm bigStart">✦</span>
                 </div>
             </div>
 
-            {/* Brands Bar */}
             <div className="brands-bar">
                 <span className="brand-name">VERSACE</span>
                 <span className="brand-name zara">ZARA</span>

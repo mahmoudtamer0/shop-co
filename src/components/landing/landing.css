@@ -9,7 +9,7 @@
 .landing-hero {
     display: flex;
     align-items: stretch;
-    min-height: 75vh;
+    max-height: 74vh;
     position: relative;
 }
 
@@ -35,16 +35,17 @@
 }
 
 .deco-star--sm {
+
     position: absolute;
     top: 48px;
-    right: 32px;
+    right: 90px;
     font-size: 28px;
 }
 
 .deco-star--lg {
     position: absolute;
-    top: 38%;
-    left: -18px;
+    top: 50%;
+    left: 50px;
     font-size: 44px;
     z-index: 3;
 }
@@ -161,6 +162,8 @@
     display: block;
 }
 
+
+
 /* ══ BRANDS BAR ══ */
 .brands-bar {
     background: #111;
@@ -199,10 +202,26 @@
     letter-spacing: 0.15em;
 }
 
+.bigStart {
+    font-size: 90px;
+
+}
+
+.mediumStar {
+    font-size: 60px;
+}
+
 /* ══════════════════════════════
    RESPONSIVE — TABLET
 ══════════════════════════════ */
-@media (max-width: 900px) {
+
+@media (min-width: 900px) {
+    .hero-image-wrap img {
+        width: 85%;
+    }
+}
+
+@media (max-width: 1100px) {
     .landing-hero {
         min-height: auto;
     }
@@ -213,6 +232,15 @@
         padding: 48px 32px 48px 32px;
     }
 
+    .mediumStar {
+        font-size: 45px;
+        left: 0;
+    }
+
+    .deco-star--lg {
+        left: 0;
+    }
+
     .hero-image-wrap {
         flex: 0 0 45%;
         max-width: 45%;
@@ -220,6 +248,21 @@
 
     .stat-item {
         padding: 0 18px;
+    }
+}
+
+@media (max-width: 900px) {
+    .bigStart {
+        font-size: 55px;
+    }
+
+    .mediumStar {
+        font-size: 35px;
+    }
+
+    .deco-star--sm {
+        top: 24px;
+        right: 55px;
     }
 }
 
@@ -245,10 +288,6 @@
         top: 24px;
         right: 20px;
         font-size: 22px;
-    }
-
-    .deco-star--lg {
-        display: none;
     }
 
     .landing-heading {
@@ -321,5 +360,30 @@
 
     .stat-divider2 {
         width: 0;
+    }
+}
+
+
+
+
+@media (max-width: 660px) {
+    .bigStart {
+        font-size: 60px;
+    }
+
+    .mediumStar {
+        font-size: 40px;
+    }
+
+    .deco-star--sm {
+        top: 24px;
+        right: 55px;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .landing-hero {
+        max-height: 100vh;
     }
 }

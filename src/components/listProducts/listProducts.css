@@ -325,6 +325,10 @@ input[type="range"] {
     gap: 12px;
 }
 
+.mobile-result-count {
+    display: none;
+}
+
 .result-count {
     font-size: 0.78rem;
     color: var(--gray-text);
@@ -665,6 +669,10 @@ input[type="range"] {
     /* إظهار الـ overlay */
     .filter-overlay {
         display: block;
+    }
+
+    .mobile-result-count {
+        display: inline;
     }
 
     /* إظهار الـ close button */
