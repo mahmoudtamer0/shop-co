@@ -302,6 +302,7 @@ input[type="range"] {
      MAIN CONTENT
   ══════════════════════════ */
 .main-content {
+    width: 100%;
     flex: 1;
     min-width: 0;
 }
