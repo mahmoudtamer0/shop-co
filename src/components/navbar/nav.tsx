@@ -115,7 +115,7 @@ const Nav = () => {
                         >
                             <i className="fa-solid fa-magnifying-glass"></i>
                         </button>
-                        <div><i className="fa-solid fa-cart-shopping"></i></div>
+                        <Link style={{ textDecoration: "none", color: "black" }} to={"/cart"}><i className="fa-solid fa-cart-shopping"></i></Link>
                         <button
                             className={`hamburger ${menuOpen ? 'open' : ''}`}
                             onClick={() => setMenuOpen(prev => !prev)}
