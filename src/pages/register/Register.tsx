@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./Register.css";
+import "./register.css";
 import type { RegisterForm, Errors } from "../../types/form";
 import { useNavigate } from "react-router-dom";
 
