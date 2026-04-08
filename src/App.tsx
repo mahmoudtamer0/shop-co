@@ -1,5 +1,5 @@
 import './App.css'
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Home from './pages/home/home'
 import Products from './pages/home/products'
 import ProductDetails from './components/productDetails/ProductDetails'
@@ -17,7 +17,7 @@ function App() {
 
   return (
     <>
-      <BrowserRouter>
+      <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -58,7 +58,7 @@ function App() {
             }
           />
         </Routes>
-      </BrowserRouter >
+      </Router >
 
     </>
   )
