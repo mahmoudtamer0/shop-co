@@ -96,8 +96,7 @@ export default function Login() {
     const handleGoogle = () => {
         setGoogleLoading(true);
 
-        // redirect مباشرة لجوجل
-        window.location.href = "http://localhost:5000/api/v1/users/google";
+        window.location.href = `${import.meta.env.VITE_API_URL}/users/google`;
     };
 
     return (

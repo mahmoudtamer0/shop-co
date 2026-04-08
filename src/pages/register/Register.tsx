@@ -87,9 +87,8 @@ export default function Register() {
 
     const handleGoogle = async () => {
         setGoogleLoading(true);
-        await new Promise((r) => setTimeout(r, 1500));
-        setGoogleLoading(false);
-        alert("Google sign-up triggered!");
+
+        window.location.href = `${import.meta.env.VITE_API_URL}/users/google`;
     };
 
     return (
