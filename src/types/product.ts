@@ -7,6 +7,11 @@ interface Thumbnail {
     cloud_id: string
 }
 
+interface Variants {
+    size: string;
+    stock: string
+}
+
 export interface Product {
 
     stock: number
@@ -19,7 +24,8 @@ export interface Product {
     finalPrice: number
     originalPrice: number
     description: string
-    category: object
+    category: object;
+    variants: Variants[];
     averageRate: number
     buys: number
 }

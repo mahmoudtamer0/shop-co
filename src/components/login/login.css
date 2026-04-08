@@ -1,0 +1,498 @@
+@import url('https://fonts.googleapis.com/css2?family=Satoshi:wght@400;500;600;700;800&family=Inter:wght@400;500&display=swap');
+
+/* ─── Variables ─────────────────────────────────────── */
+:root {
+    --black: #000000;
+    --white: #ffffff;
+    --gray-50: #fafafa;
+    --gray-100: #f5f5f5;
+    --gray-200: #e5e5e5;
+    --gray-400: #a0a0a0;
+    --gray-600: #525252;
+    --gray-800: #262626;
+    --accent: #000000;
+    --error: #dc2626;
+    --error-bg: #fef2f2;
+    --success: #16a34a;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+    --shadow-focus: 0 0 0 3px rgba(0, 0, 0, 0.12);
+    --transition: 0.2s ease;
+}
+
+/* ─── Reset ──────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ─── Page layout ────────────────────────────────────── */
+.auth-page {
+    display: flex;
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    background: var(--white);
+}
+
+/* ─── Left Panel ─────────────────────────────────────── */
+.auth-left {
+    flex: 1;
+    background: var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 48px;
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-left::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.04) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.06) 0%, transparent 50%);
+}
+
+.auth-left::after {
+    content: '';
+    position: absolute;
+    bottom: -80px;
+    right: -80px;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.auth-left-content {
+    position: relative;
+    z-index: 1;
+    max-width: 420px;
+}
+
+.brand-logo {
+    font-family: 'Satoshi', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    color: var(--white);
+    letter-spacing: 0.05em;
+    margin-bottom: 48px;
+    display: inline-block;
+}
+
+.auth-tagline {
+    font-family: 'Satoshi', sans-serif;
+    font-weight: 800;
+    font-size: clamp(32px, 4vw, 48px);
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+}
+
+.auth-sub {
+    font-size: 16px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.55);
+    margin-bottom: 48px;
+}
+
+.auth-stats {
+    display: flex;
+    gap: 40px;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.stat-number {
+    font-family: 'Satoshi', sans-serif;
+    font-weight: 800;
+    font-size: 26px;
+    color: var(--white);
+    letter-spacing: -0.02em;
+}
+
+.stat-label {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.45);
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+/* ─── Right Panel ────────────────────────────────────── */
+.auth-right {
+    width: 100%;
+    max-width: 520px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 32px;
+    background: var(--white);
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 420px;
+    animation: slideUp 0.4s ease both;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.auth-header {
+    margin-bottom: 32px;
+}
+
+.auth-header h2 {
+    font-family: 'Satoshi', sans-serif;
+    font-weight: 800;
+    font-size: 30px;
+    color: var(--black);
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+}
+
+.auth-header p {
+    font-size: 15px;
+    color: var(--gray-400);
+}
+
+/* ─── Google Button ──────────────────────────────────── */
+.google-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 13px 20px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    background: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gray-800);
+    cursor: pointer;
+    transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+    min-height: 48px;
+}
+
+.google-btn:hover:not(:disabled) {
+    border-color: var(--gray-400);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
+}
+
+.google-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.google-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.google-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+/* ─── Divider ────────────────────────────────────────── */
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 24px 0;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--gray-200);
+}
+
+.divider span {
+    font-size: 12px;
+    color: var(--gray-400);
+    white-space: nowrap;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+/* ─── Field Group ────────────────────────────────────── */
+.field-group {
+    margin-bottom: 18px;
+}
+
+.field-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray-800);
+    margin-bottom: 7px;
+    letter-spacing: 0.01em;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 14px;
+    width: 16px;
+    height: 16px;
+    color: var(--gray-400);
+    pointer-events: none;
+    flex-shrink: 0;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 12px 16px 12px 42px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--black);
+    background: var(--gray-50);
+    transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+    outline: none;
+    min-height: 48px;
+}
+
+.input-wrapper input::placeholder {
+    color: var(--gray-400);
+}
+
+.input-wrapper input:focus {
+    border-color: var(--black);
+    background: var(--white);
+    box-shadow: var(--shadow-focus);
+}
+
+.has-error .input-wrapper input {
+    border-color: var(--error);
+    background: var(--error-bg);
+}
+
+.has-error .input-wrapper input:focus {
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--gray-400);
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    transition: color var(--transition);
+}
+
+.toggle-password:hover {
+    color: var(--gray-800);
+}
+
+.toggle-password svg {
+    width: 16px;
+    height: 16px;
+}
+
+.error-msg {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--error);
+    font-weight: 500;
+}
+
+/* ─── Form Options ───────────────────────────────────── */
+.form-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    margin-top: 4px;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--gray-600);
+    font-weight: 500;
+    user-select: none;
+}
+
+.remember-me input[type="checkbox"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 4px;
+    background: var(--white);
+    cursor: pointer;
+    transition: border-color var(--transition), background var(--transition);
+    position: relative;
+    flex-shrink: 0;
+}
+
+.remember-me input[type="checkbox"]:checked {
+    background: var(--black);
+    border-color: var(--black);
+}
+
+.remember-me input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 1px;
+    width: 5px;
+    height: 9px;
+    border: 2px solid white;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg);
+}
+
+.forgot-link {
+    font-size: 13px;
+    color: var(--black);
+    text-decoration: none;
+    font-weight: 600;
+    transition: opacity var(--transition);
+}
+
+.forgot-link:hover {
+    opacity: 0.6;
+}
+
+/* ─── Submit Button ──────────────────────────────────── */
+.submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--black);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: 'Satoshi', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    transition: opacity var(--transition), transform var(--transition);
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.submit-btn:hover:not(:disabled) {
+    opacity: 0.85;
+    transform: translateY(-1px);
+}
+
+.submit-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ─── Spinner ────────────────────────────────────────── */
+.spinner {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(0, 0, 0, 0.12);
+    border-top-color: var(--black);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+.spinner.white {
+    border-color: rgba(255, 255, 255, 0.3);
+    border-top-color: var(--white);
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ─── Auth Switch ────────────────────────────────────── */
+.auth-switch {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 14px;
+    color: var(--gray-400);
+}
+
+.auth-switch a {
+    color: var(--black);
+    font-weight: 700;
+    text-decoration: none;
+    transition: opacity var(--transition);
+}
+
+.auth-switch a:hover {
+    opacity: 0.6;
+}
+
+/* ─── Responsive ─────────────────────────────────────── */
+@media (max-width: 900px) {
+    .auth-left {
+        display: none;
+    }
+
+    .auth-right {
+        max-width: 100%;
+        padding: 48px 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-right {
+        padding: 32px 16px;
+    }
+
+    .auth-card {
+        max-width: 100%;
+    }
+}

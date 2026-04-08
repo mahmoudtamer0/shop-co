@@ -128,7 +128,7 @@
     flex-shrink: 0;
 }
 
-.stat-number {
+.stat-number-landing {
     font-family: "Archivo Black", sans-serif;
     font-size: clamp(1.4rem, 2.2vw, 2rem);
     color: #111;

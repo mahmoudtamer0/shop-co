@@ -22,18 +22,18 @@ const Landing = () => {
 
                     <div className="stats">
                         <div className="stat-item">
-                            <span className="stat-number">200+</span>
-                            <span className="stat-label">International Brands</span>
+                            <span className="stat-number-landing">200+</span>
+                            <span className="stat-label-landing">International Brands</span>
                         </div>
                         <div className="stat-divider" />
                         <div className="stat-item">
-                            <span className="stat-number">2,000+</span>
-                            <span className="stat-label">High-Quality Products</span>
+                            <span className="stat-number-landing">2,000+</span>
+                            <span className="stat-label-landing">High-Quality Products</span>
                         </div>
                         <div className="stat-divider stat-divider2" />
                         <div className="stat-item">
-                            <span className="stat-number">30,000+</span>
-                            <span className="stat-label">Happy Customers</span>
+                            <span className="stat-number-landing">30,000+</span>
+                            <span className="stat-label-landing">Happy Customers</span>
                         </div>
                     </div>
                 </div>

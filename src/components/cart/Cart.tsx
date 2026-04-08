@@ -51,15 +51,65 @@ const Cart = () => {
     const [promoCode, setPromoCode] = useState("");
     const [promoApplied, setPromoApplied] = useState(false);
     const [promoError, setPromoError] = useState(false);
+    const [cart, setCart] = useState<any[]>(() => {
+        try {
+            const data = localStorage.getItem("cart");
+            return data ? JSON.parse(data) : [];
+        } catch {
+            return [];
+        }
+    });
+
+    const [subTotal, setSubTotal] = useState<any>(() => {
+        try {
+            const data = localStorage.getItem("subTotal");
+            return data ? JSON.parse(data) : undefined;
+        } catch {
+            return undefined;
+        }
+    });
+
+    const [delivery, setDelivery] = useState<any>(() => {
+        try {
+            const data = localStorage.getItem("delivery");
+            return data ? JSON.parse(data) : undefined;
+        } catch {
+            return undefined;
+        }
+    });
+
+    const [tax, setTax] = useState<any>(() => {
+        try {
+            const data = localStorage.getItem("tax");
+            return data ? JSON.parse(data) : undefined;
+        } catch {
+            return undefined;
+        }
+    });
+
+    const [totalCart, setTotalCart] = useState<any>(() => {
+        try {
+            const data = localStorage.getItem("totalCart");
+            return data ? JSON.parse(data) : undefined;
+        } catch {
+            return undefined;
+        }
+    });
+
+
 
     const updateQty = (id: string, delta: number) => {
-        setItems((prev) =>
-            prev
-                .map((item) =>
-                    item.id === id ? { ...item, quantity: Math.max(0, item.quantity + delta) } : item
-                )
-                .filter((item) => item.quantity > 0)
-        );
+        // const updatedCart = cart.map((item) =>
+        //     item.id === id
+        //         ? {
+        //             ...item,
+        //             quantity: Math.max(1, item.quantity + delta), // 👈 مش أقل من 1
+        //         }
+        //         : item
+        // );
+
+        // setCart(updatedCart);
+        // localStorage.setItem("cart", JSON.stringify(updatedCart));
     };
 
     const removeItem = (id: string) => {
@@ -76,10 +126,6 @@ const Cart = () => {
         }
     };
 
-    const subtotal = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    const discount = promoApplied ? Math.round(subtotal * 0.2) : 0;
-    const delivery = subtotal > 0 ? 15 : 0;
-    const total = subtotal - discount + delivery;
 
     return (
         <div className="cart-root">
@@ -95,7 +141,7 @@ const Cart = () => {
 
                 <h1 className="cart-title">Your Cart</h1>
 
-                {items.length === 0 ? (
+                {cart.length === 0 ? (
                     <div className="cart-empty">
                         <div className="cart-empty-icon">🛒</div>
                         <h3>Your cart is empty</h3>
@@ -106,9 +152,9 @@ const Cart = () => {
                     <div className="cart-layout">
                         {/* Items */}
                         <div className="cart-items-panel">
-                            {items.map((item) => (
+                            {cart.map((item: any) => (
                                 <div key={item.id} className="cart-item">
-                                    <img src={item.image} alt={item.title} className="cart-item-img" />
+                                    <img src={item.productImage} alt={item.title} className="cart-item-img" />
                                     <div className="cart-item-body">
                                         <div>
                                             <div className="cart-item-top">
@@ -126,15 +172,13 @@ const Cart = () => {
                                             </div>
                                             <div className="cart-item-meta">
                                                 Size: <span>{item.size}</span>
-                                                <br />
-                                                Color: <span>{item.color}</span>
                                             </div>
                                         </div>
 
                                         <div className="cart-item-bottom">
                                             <div>
-                                                <span className="cart-item-price">${item.price}</span>
-                                                {item.originalPrice && (
+                                                <span className="cart-item-price">${item.totalPrice}</span>
+                                                {item.discount > 0 && (
                                                     <span className="cart-item-price-old">${item.originalPrice}</span>
                                                 )}
                                             </div>
@@ -155,15 +199,15 @@ const Cart = () => {
 
                             <div className="summary-row">
                                 <span>Subtotal</span>
-                                <span className="val">${subtotal}</span>
+                                <span className="val">${subTotal}</span>
                             </div>
 
-                            {promoApplied && (
+                            {/* {promoApplied && (
                                 <div className="summary-row">
                                     <span>Discount (-20%)</span>
                                     <span className="val discount">-${discount}</span>
                                 </div>
-                            )}
+                            )} */}
 
                             <div className="summary-row">
                                 <span>Delivery Fee</span>
@@ -176,7 +220,7 @@ const Cart = () => {
 
                             <div className="summary-total">
                                 <span>Total</span>
-                                <span>${total}</span>
+                                <span>${totalCart}</span>
                             </div>
 
                             {/* Promo */}
@@ -199,8 +243,8 @@ const Cart = () => {
                                 </button>
                             </div>
 
-                            {promoApplied && <div className="promo-msg success">🎉 Promo code applied! You saved ${discount}</div>}
-                            {promoError && <div className="promo-msg error-msg">Invalid promo code. Try SHOP20</div>}
+                            {/* {promoApplied && <div className="promo-msg success">🎉 Promo code applied! You saved ${discount}</div>}
+                            {promoError && <div className="promo-msg error-msg">Invalid promo code. Try SHOP20</div>} */}
 
                             <button className="checkout-btn">
                                 Go to Checkout

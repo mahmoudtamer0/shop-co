@@ -8,6 +8,9 @@ const ProductDetails = () => {
     const { prodId } = useParams()
     const [product, setProduct] = useState<Product>()
     const [mainImg, setMainImg] = useState(0)
+    const [selectedVariant, setSelectedVariant] = useState(0)
+    const [quantity, setQuantity] = useState(1)
+
 
     useEffect(() => {
         window.scrollTo({
@@ -18,6 +21,55 @@ const ProductDetails = () => {
             .then(data => setProduct(data.data))
     }, [prodId])
 
+
+    const addToCart = async (product: Product, size: string, quantity: number) => {
+        let cart: any[] = [];
+
+        const storedCart = localStorage.getItem("cart");
+
+        if (storedCart) {
+            cart = JSON.parse(storedCart);
+        }
+
+        const existing = cart.find(
+            (item: any) =>
+                item.id === product._id &&
+                item.size === size
+        );
+
+        if (existing) {
+            existing.quantity += quantity;
+        } else {
+            cart.push({
+                id: product._id,
+                productImage: product.productImages[0].url,
+                title: product.title,
+                quantity: quantity,
+                size: size
+            });
+        }
+
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/products/calculate-cart`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                cart: cart
+            }),
+        })
+
+        const data = await response.json()
+
+        if (response.ok) {
+            localStorage.setItem("cart", JSON.stringify(data.newItems));
+            localStorage.setItem("subTotal", JSON.stringify(data.subTotal));
+            localStorage.setItem("delivery", JSON.stringify(data.delivery));
+            localStorage.setItem("tax", JSON.stringify(data.tax));
+            localStorage.setItem("totalCart", JSON.stringify(data.totalCart));
+        }
+    };
+
     return (
         <div className="container">
             <section className="product-section container">
@@ -27,7 +79,7 @@ const ProductDetails = () => {
 
                         {
                             product ? product.productImages.map((img, index) => (
-                                <div className={mainImg == index ? "thumb active" : "thumb"} onClick={() => setMainImg(index)}>
+                                <div key={img.url} className={mainImg == index ? "thumb active" : "thumb"} onClick={() => setMainImg(index)}>
                                     <img src={img.url} alt="T-shirt view 2" />
                                 </div>
                             ))
@@ -58,44 +110,52 @@ const ProductDetails = () => {
 
                     <div className="price-row">
                         <span className="price-current">${product?.finalPrice}</span>
-                        <span className="price-original">${product?.originalPrice}</span>
-                        <span className="badge-sale">-{product?.discount}%</span>
+                        {product && product.discount > 0 ?
+                            <>
+                                <span className="price-original">${product?.originalPrice}</span>
+                                <span className="badge-sale">-{product?.discount}%</span>
+                            </>
+                            :
+                            null
+                        }
+
                     </div>
 
                     <p className="product-desc">
-                        {product?.description}                    </p>
-
-                    <hr className="divider" />
-
-                    <p className="label">Select Colors</p>
-                    <div className="color-row">
-                        <div className="swatch active" style={{ background: "#4a5240" }} title="Olive"></div>
-                        <div className="swatch" style={{ background: "#1a1a1a" }} title="Black"></div>
-                        <div className="swatch" style={{ backgroundColor: "#3a7060" }} title="Teal"></div>
-                    </div>
+                        {product?.description}</p>
 
                     <hr className="divider" />
 
                     <p className="label">Choose Size</p>
                     <div className="size-row">
-                        <button className="size-btn">Small</button>
-                        <button className="size-btn">Medium</button>
-                        <button className="size-btn active">Large</button>
-                        <button className="size-btn">X-Large</button>
+                        {product?.variants?.map((variant, index) => (
+                            <button className={`size-btn ${index == selectedVariant ? "active" : null}`}
+                                onClick={() => setSelectedVariant(index)}
+                            >{variant.size}</button>
+                        ))}
                     </div>
 
                     <div className="cart-row">
                         <div className="qty-control">
-                            <button className="qty-btn" >&#8722;</button>
-                            <div className="qty-value" id="qty">1</div>
-                            <button className="qty-btn" >+</button>
+                            <button className="qty-btn" onClick={() => setQuantity(quantity > 1 ? quantity - 1 : quantity)}>-</button>
+                            <div className="qty-value" id="qty">{quantity}</div>
+                            <button className="qty-btn" onClick={() => setQuantity(quantity + 1)}>+</button>
                         </div>
-                        <button className="btn-cart">Add to Cart</button>
+                        <button className="btn-cart" onClick={() => {
+                            if (!product) return;
+
+                            addToCart(
+                                product,
+                                product.variants[selectedVariant].size,
+                                quantity
+                            );
+                        }}>Add to Cart</button>
                     </div>
                 </div>
             </section>
 
             <ProductsHome heading='YOU ALSO MIGHT LIKE' filter='' />
+
             <div className="tabs-section">
                 <div className="tabs">
                     <div className="tab">Product Details</div>

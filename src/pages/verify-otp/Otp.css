@@ -1,0 +1,166 @@
+.auth-pageOtp {
+    display: flex;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+/* LEFT SIDE */
+.auth-pageOtp .auth-left {
+    flex: 1;
+    background: linear-gradient(135deg, #111, #333);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.auth-pageOtp .auth-left-content {
+    max-width: 400px;
+}
+
+.auth-pageOtp .brand-logo {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.auth-pageOtp .auth-tagline {
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+
+.auth-pageOtp .auth-sub {
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+/* RIGHT SIDE */
+.auth-pageOtp .auth-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f9fafb;
+}
+
+.auth-pageOtp .auth-card {
+    width: 350px;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.auth-pageOtp .auth-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.auth-pageOtp .auth-header h2 {
+    margin-bottom: 5px;
+}
+
+.auth-pageOtp .auth-header p {
+    font-size: 14px;
+    color: #666;
+}
+
+/* INPUT */
+.auth-pageOtp .field-group {
+    margin-bottom: 20px;
+}
+
+.auth-pageOtp .field-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.auth-pageOtp .field-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+    font-size: 14px;
+}
+
+.field-group input:focus {
+    border-color: #000;
+}
+
+/* ERROR */
+.error-msg {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.has-error input {
+    border-color: red;
+}
+
+/* BUTTON */
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: #000;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* SPINNER */
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ccc;
+    border-top: 2px solid #000;
+    border-radius: 50%;
+    display: inline-block;
+    animation: spin 1s linear infinite;
+}
+
+.spinner.white {
+    border: 2px solid #fff;
+    border-top: 2px solid transparent;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+
+.resend-wrapper {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.resend-btn {
+    background: none;
+    border: none;
+    color: #000;
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.resend-btn:hover {
+    opacity: 0.7;
+}
+
+.resend-text {
+    font-size: 12px;
+    color: #888;
+}
