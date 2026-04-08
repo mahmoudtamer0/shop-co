@@ -192,8 +192,10 @@ const Nav = () => {
                     <li><Link to="/products" onClick={() => setMenuOpen(false)}>All Products</Link></li>
                     <li><Link to="/on-sale" onClick={() => setMenuOpen(false)}>On Sale</Link></li>
                     <li><Link to="/new-arrivals" onClick={() => setMenuOpen(false)}>New Arrivals</Link></li>
+                    <li><Link to="/login" onClick={() => setMenuOpen(false)}>Login</Link></li>
                 </ul>
                 <div className="drawer-footer">
+
                     <div className="drawer-icon"><i className="fa-regular fa-circle-user"></i> My Account</div>
                 </div>
             </div>
