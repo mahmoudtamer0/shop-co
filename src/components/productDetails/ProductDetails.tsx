@@ -21,8 +21,7 @@ const ProductDetails = () => {
             .then(data => setProduct(data.data))
     }, [prodId])
 
-
-    const addToCart = async (product: Product, size: string, quantity: number) => {
+    const addToCart = async (product: Product) => {
         let cart: any[] = [];
 
         const storedCart = localStorage.getItem("cart");
@@ -31,21 +30,20 @@ const ProductDetails = () => {
             cart = JSON.parse(storedCart);
         }
 
-        const existing = cart.find(
-            (item: any) =>
-                item.id === product._id &&
-                item.size === size
-        );
+        const existing = cart.find((item: any) => item.id == product._id && item.size == product.variants[selectedVariant].size);
 
         if (existing) {
+            console.log("exist")
             existing.quantity += quantity;
         } else {
+            console.log("added")
+
             cart.push({
-                id: product._id,
+                id: product._id.toString(),
                 productImage: product.productImages[0].url,
                 title: product.title,
                 quantity: quantity,
-                size: size
+                size: product.variants[selectedVariant].size
             });
         }
 
@@ -145,9 +143,7 @@ const ProductDetails = () => {
                             if (!product) return;
 
                             addToCart(
-                                product,
-                                product.variants[selectedVariant].size,
-                                quantity
+                                product
                             );
                         }}>Add to Cart</button>
                     </div>
