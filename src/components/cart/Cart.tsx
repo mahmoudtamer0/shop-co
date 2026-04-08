@@ -98,7 +98,7 @@ const Cart = () => {
 
 
 
-    const updateQty = (id: string, delta: number) => {
+    const updateQty = () => {
         // const updatedCart = cart.map((item) =>
         //     item.id === id
         //         ? {
@@ -183,9 +183,9 @@ const Cart = () => {
                                                 )}
                                             </div>
                                             <div className="qty-control">
-                                                <button className="qty-btn" onClick={() => updateQty(item.id, -1)} aria-label="Decrease">−</button>
+                                                <button className="qty-btn" aria-label="Decrease">−</button>
                                                 <span className="qty-value">{item.quantity}</span>
-                                                <button className="qty-btn" onClick={() => updateQty(item.id, 1)} aria-label="Increase">+</button>
+                                                <button className="qty-btn" aria-label="Increase">+</button>
                                             </div>
                                         </div>
                                     </div>
