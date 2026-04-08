@@ -1,8 +1,36 @@
 {
-    "rewrites": [
+    "routes": [
         {
-            "source": "/(.*)",
-            "destination": "/dist/index.html"
+            "src": "/(.*)",
+            "dest": "/"
+        },
+        {
+            "src": "/login",
+            "dest": "/"
+        },
+        {
+            "src": "/register",
+            "dest": "/"
+        },
+        {
+            "src": "/auth/success",
+            "dest": "/"
+        },
+        {
+            "src": "/verify-otp",
+            "dest": "/"
+        },
+        {
+            "src": "/products",
+            "dest": "/"
+        },
+        {
+            "src": "/products/",
+            "dest": "/"
+        },
+        {
+            "src": "/cart",
+            "dest": "/"
         }
     ]
 }
