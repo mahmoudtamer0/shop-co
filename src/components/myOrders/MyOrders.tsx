@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./Myorder.css";
+import "./MyOrder.css";
 
 interface OrderItem {
     id: number;
