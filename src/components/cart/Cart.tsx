@@ -1,135 +1,166 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-interface CartItem {
-    id: string;
-    title: string;
-    price: number;
-    originalPrice?: number;
-    size: string;
-    color: string;
-    quantity: number;
-    image: string;
-}
-
-const mockItems: CartItem[] = [
-    {
-        id: "1",
-        title: "Gradient Graphic T-shirt",
-        price: 145,
-        size: "Large",
-        color: "White",
-        quantity: 1,
-        image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300&q=80",
-    },
-    {
-        id: "2",
-        title: "Checkered Shirt",
-        price: 180,
-        originalPrice: 212,
-        size: "Medium",
-        color: "Red",
-        quantity: 1,
-        image: "https://images.unsplash.com/photo-1594938298603-c8148c4b4dfe?w=300&q=80",
-    },
-    {
-        id: "3",
-        title: "Skinny Fit Jeans",
-        price: 240,
-        originalPrice: 260,
-        size: "Large",
-        color: "Blue",
-        quantity: 1,
-        image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=300&q=80",
-    },
-];
-
 import "./cart.css"
+import type { CartItem } from "../../types/cart";
 
 const Cart = () => {
-    const [items, setItems] = useState<CartItem[]>(mockItems);
-    const [promoCode, setPromoCode] = useState("");
-    const [promoApplied, setPromoApplied] = useState(false);
-    const [promoError, setPromoError] = useState(false);
-    const [cart, setCart] = useState<any[]>(() => {
-        try {
-            const data = localStorage.getItem("cart");
-            return data ? JSON.parse(data) : [];
-        } catch {
-            return [];
+
+    const [cartItems, setCartItems] = useState<any[]>([])
+
+    const [subTotal, setSubTotal] = useState(0);
+
+    const [delivery, setDelivery] = useState(0)
+    const [tax, setTax] = useState(0)
+    const [taxPercent, setTaxPercent] = useState(0)
+    const [totalCart, setTotalCart] = useState(0)
+    const [isLoading, setIsLoading] = useState(false)
+    const [itemErrors, setItemErrors] = useState<Record<string, string>>({});
+
+    const askServer = async (cart: CartItem[]) => {
+
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/products/calculate-cart`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                cart: cart
+            }),
+        });
+
+        const data = await response.json();
+
+        return { response, data }
+
+        // if (response.ok) {
+        //     setCartItems(data.newItems);
+        //     setSubTotal(data.subTotal);
+        //     setDelivery(data.delivery);
+        //     setTotalCart(data.totalCart);
+        //     return;
+        // }
+
+    }
+
+    const updateQty = async (id: string, size: string, delta: number) => {
+        setIsLoading(true)
+        let cart: any[] = [];
+        const storedCart = localStorage.getItem("cart");
+        if (storedCart) {
+            cart = JSON.parse(storedCart);
         }
-    });
 
-    const [subTotal, setSubTotal] = useState<any>(() => {
-        try {
-            const data = localStorage.getItem("subTotal");
-            return data ? JSON.parse(data) : undefined;
-        } catch {
-            return undefined;
+        const updatedCart = cart.map((item: any) => {
+            if (item.id === id && item.size === size) {
+                return {
+                    ...item,
+                    quantity: Math.max(1, item.quantity + delta)
+                };
+            }
+
+            return item;
+        });
+
+
+        const getCart = await askServer(updatedCart)
+
+        if (!getCart.response.ok) {
+            setItemErrors((prev) => ({
+                ...prev,
+                [`${getCart.data.productId}-${getCart.data.size}`]: getCart.data.message
+            }));
+            setIsLoading(false)
+            return;
         }
-    });
 
-    const [delivery, setDelivery] = useState<any>(() => {
-        try {
-            const data = localStorage.getItem("delivery");
-            return data ? JSON.parse(data) : undefined;
-        } catch {
-            return undefined;
-        }
-    });
+        setItemErrors((prev) => {
+            const copy = { ...prev };
+            delete copy[`${id}-${size}`];
+            return copy;
+        });
+        localStorage.setItem("cart", JSON.stringify(getCart.data.newItems));
 
-    const [tax, setTax] = useState<any>(() => {
-        try {
-            const data = localStorage.getItem("tax");
-            return data ? JSON.parse(data) : undefined;
-        } catch {
-            return undefined;
-        }
-    });
-
-    const [totalCart, setTotalCart] = useState<any>(() => {
-        try {
-            const data = localStorage.getItem("totalCart");
-            return data ? JSON.parse(data) : undefined;
-        } catch {
-            return undefined;
-        }
-    });
+        setCartItems([...getCart.data.newItems]);
+        setSubTotal(getCart.data.subTotal);
+        setDelivery(getCart.data.delivery);
+        setTax(getCart.data.tax);
+        setTaxPercent(getCart.data.taxPercent);
+        setTotalCart(getCart.data.totalCart);
 
 
-
-    const updateQty = () => {
-        // const updatedCart = cart.map((item) =>
-        //     item.id === id
-        //         ? {
-        //             ...item,
-        //             quantity: Math.max(1, item.quantity + delta), // 👈 مش أقل من 1
-        //         }
-        //         : item
-        // );
-
-        // setCart(updatedCart);
-        // localStorage.setItem("cart", JSON.stringify(updatedCart));
+        setIsLoading(false)
     };
 
-    const removeItem = (id: string) => {
-        setItems((prev) => prev.filter((item) => item.id !== id));
-    };
 
-    const applyPromo = () => {
-        if (promoCode.toUpperCase() === "SHOP20") {
-            setPromoApplied(true);
-            setPromoError(false);
-        } else {
-            setPromoError(true);
-            setPromoApplied(false);
+    const removeItem = async (prod: any) => {
+        let cart: any[] = [];
+
+        const storedCart = localStorage.getItem("cart");
+        if (storedCart) {
+            cart = JSON.parse(storedCart);
         }
+
+        const removeCart = cart.filter(
+            (item: any) => !(item.id === prod.id && item.size === prod.size)
+        );
+
+        const getCart = await askServer(removeCart);
+
+        if (getCart.response.ok) {
+            setCartItems(getCart.data.newItems);
+            setSubTotal(getCart.data.subTotal);
+            setDelivery(getCart.data.delivery);
+            setTax(getCart.data.tax);
+            setTaxPercent(getCart.data.taxPercent);
+            setTotalCart(getCart.data.totalCart);
+            localStorage.setItem("cart", JSON.stringify(getCart.data.newItems));
+            return;
+        }
+
     };
 
+
+    const getAndCalcCart = async () => {
+
+        let cart: CartItem[] = [];
+
+        const storedCart = localStorage.getItem("cart");
+
+        if (storedCart) {
+            cart = JSON.parse(storedCart);
+        }
+        const getCart = await askServer(cart)
+
+        if (!getCart.response.ok) {
+            setCartItems(cart);
+            setItemErrors((prev) => ({
+                ...prev,
+                [`${getCart.data.productId}-${getCart.data.size}`]: "product unavailble"
+            }));
+            return;
+        }
+
+        if (getCart.response.ok) {
+            setCartItems(getCart.data.newItems);
+            setSubTotal(getCart.data.subTotal);
+            setDelivery(getCart.data.delivery);
+            setTax(getCart.data.tax);
+            setTaxPercent(getCart.data.taxPercent);
+            setTotalCart(getCart.data.totalCart);
+            localStorage.setItem("cart", JSON.stringify(getCart.data.newItems));
+            return;
+        }
+
+    }
+
+
+    useEffect(() => {
+        getAndCalcCart()
+    }, [])
 
     return (
         <div className="cart-root">
-
 
             <div className="cart-page">
                 {/* Breadcrumb */}
@@ -141,7 +172,7 @@ const Cart = () => {
 
                 <h1 className="cart-title">Your Cart</h1>
 
-                {cart.length === 0 ? (
+                {cartItems.length === 0 ? (
                     <div className="cart-empty">
                         <div className="cart-empty-icon">🛒</div>
                         <h3>Your cart is empty</h3>
@@ -152,8 +183,9 @@ const Cart = () => {
                     <div className="cart-layout">
                         {/* Items */}
                         <div className="cart-items-panel">
-                            {cart.map((item: any) => (
-                                <div key={item.id} className="cart-item">
+                            {cartItems.map((item: any) => (
+                                <div key={`${item.id}-${item.size}`}
+                                    className={`cart-item ${itemErrors[`${item.id}-${item.size}`] ? "item-cart-error" : ""}`}>
                                     <img src={item.productImage} alt={item.title} className="cart-item-img" />
                                     <div className="cart-item-body">
                                         <div>
@@ -161,7 +193,7 @@ const Cart = () => {
                                                 <div className="cart-item-title">{item.title}</div>
                                                 <button
                                                     className="cart-delete-btn"
-                                                    onClick={() => removeItem(item.id)}
+                                                    onClick={() => removeItem(item)}
                                                     aria-label="Remove item"
                                                 >
                                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -176,6 +208,11 @@ const Cart = () => {
                                         </div>
 
                                         <div className="cart-item-bottom">
+                                            {itemErrors[`${item.id}-${item.size}`] && (
+                                                <div className="error-msg">
+                                                    {itemErrors[`${item.id}-${item.size}`]}
+                                                </div>
+                                            )}
                                             <div>
                                                 <span className="cart-item-price">${item.totalPrice}</span>
                                                 {item.discount > 0 && (
@@ -183,9 +220,9 @@ const Cart = () => {
                                                 )}
                                             </div>
                                             <div className="qty-control">
-                                                <button className="qty-btn" aria-label="Decrease">−</button>
+                                                <button className="qty-btn" aria-label="Decrease" onClick={() => updateQty(item.id, item.size, -1)}>−</button>
                                                 <span className="qty-value">{item.quantity}</span>
-                                                <button className="qty-btn" aria-label="Increase">+</button>
+                                                <button className="qty-btn" aria-label="Increase" onClick={() => updateQty(item.id, item.size, +1)}>+</button>
                                             </div>
                                         </div>
                                     </div>
@@ -194,7 +231,7 @@ const Cart = () => {
                         </div>
 
                         {/* Order Summary */}
-                        <div className="order-summary">
+                        {!isLoading ? <div className="order-summary">
                             <div className="summary-title">Order Summary</div>
 
                             <div className="summary-row">
@@ -202,17 +239,17 @@ const Cart = () => {
                                 <span className="val">${subTotal}</span>
                             </div>
 
-                            {/* {promoApplied && (
-                                <div className="summary-row">
-                                    <span>Discount (-20%)</span>
-                                    <span className="val discount">-${discount}</span>
-                                </div>
-                            )} */}
-
                             <div className="summary-row">
                                 <span>Delivery Fee</span>
                                 <span className={`val${delivery === 0 ? " free" : ""}`}>
                                     {delivery === 0 ? "Free" : `$${delivery}`}
+                                </span>
+                            </div>
+
+                            <div className="summary-row">
+                                <span>Tax({taxPercent})</span>
+                                <span className={`val${delivery === 0 ? " free" : ""}`}>
+                                    {tax}
                                 </span>
                             </div>
 
@@ -223,36 +260,37 @@ const Cart = () => {
                                 <span>${totalCart}</span>
                             </div>
 
-                            {/* Promo */}
-                            <div className="promo-row">
-                                <input
-                                    type="text"
-                                    className={`promo-input${promoError ? " error" : ""}`}
-                                    placeholder="Add promo code"
-                                    value={promoCode}
-                                    onChange={(e) => { setPromoCode(e.target.value); setPromoError(false); }}
-                                    onKeyDown={(e) => e.key === "Enter" && !promoApplied && applyPromo()}
-                                    disabled={promoApplied}
-                                />
-                                <button
-                                    className={`promo-btn${promoApplied ? " applied" : ""}`}
-                                    onClick={applyPromo}
-                                    disabled={promoApplied}
-                                >
-                                    {promoApplied ? "Applied ✓" : "Apply"}
-                                </button>
-                            </div>
-
-                            {/* {promoApplied && <div className="promo-msg success">🎉 Promo code applied! You saved ${discount}</div>}
-                            {promoError && <div className="promo-msg error-msg">Invalid promo code. Try SHOP20</div>} */}
-
-                            <button className="checkout-btn">
+                            <Link className="checkout-btn" to={"/checkout"}>
                                 Go to Checkout
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                                     <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
-                            </button>
-                        </div>
+                            </Link>
+                        </div> :
+                            <div className="order-summary">
+                                <div className="sk sk-line" style={{ width: "55%", marginBottom: 20 }} />
+
+                                <div className="summary-row">
+                                    <div className="sk sk-line" style={{ width: "38%" }} />
+                                    <div className="sk sk-line" style={{ width: "22%" }} />
+                                </div>
+
+                                <div className="summary-row">
+                                    <div className="sk sk-line" style={{ width: "44%" }} />
+                                    <div className="sk sk-line" style={{ width: "18%" }} />
+                                </div>
+
+                                <hr className="summary-divider" />
+
+                                <div className="summary-total">
+                                    <div className="sk sk-line" style={{ width: "28%", height: 15 }} />
+                                    <div className="sk sk-line" style={{ width: "24%", height: 15 }} />
+                                </div>
+
+                                <div className="sk sk-btn" />
+                            </div>
+                        }
+
                     </div>
                 )}
             </div>

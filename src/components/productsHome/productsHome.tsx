@@ -18,7 +18,7 @@ const ProductsHome = ({ heading, filter }: { heading: string, filter: string }) 
         <div style={{ margin: "60px 0" }}>
             <div className="container">
 
-                <h2 className="section-title">{heading}</h2>
+                <h2 className="section-title-big">{heading}</h2>
 
                 <div className="row g-4">
 
@@ -41,7 +41,7 @@ const ProductsHome = ({ heading, filter }: { heading: string, filter: string }) 
                                         <span className="rating-val">({product.ratingsQuantity})</span>
                                     </div>
 
-                                    <div className="price-row">
+                                    <div className="price-row-products">
                                         <span className="price-now">${product.finalPrice}</span>
                                         {
                                             product.discount > 0 ?

@@ -12,7 +12,7 @@ const ListProducts = () => {
     const [totalPages, setTotalPages] = useState(1)
     const [totalProducts, setTotalProducts] = useState(0)
     const [results, setResults] = useState(1)
-
+    const currentSort = searchParams.get("sort") || "Most Popular";
     const sort = searchParams.get("sort")
     const page = Number(searchParams.get("page")) || 1
     const category = searchParams.get("category") || ""
@@ -217,23 +217,19 @@ const ListProducts = () => {
                             <div className="sort-meta">
                                 <span className="result-count">Showing {results} of {totalProducts} Products</span>
                                 <span style={{ fontSize: "0.78rem; color:var(--gray-text)" }}>Sort by:</span>
-                                <select className="sort-select" value={sort || ""} onChange={(e) => {
-                                    const params = Object.fromEntries(searchParams.entries());
-                                    setSearchParams({
-                                        ...params,
-                                        sort: e.target.value.split("Price: ")[1],
-                                        page: "1"
-                                    });
-                                }}>
-                                    <option onClick={(e) => {
-                                        const params = Object.fromEntries(searchParams.entries());
-                                        setSearchParams({
-                                            ...params,
-                                            sort: e.currentTarget.innerText,
-                                            type: "",
-                                            page: "1"
-                                        });
-                                    }}>Most Popular</option>
+                                <select className="sort-select" value={currentSort === "Low to High" ? "Price: Low to High"
+                                    : currentSort === "High to Low" ? "Price: High to Low"
+                                        : currentSort} onChange={(e) => {
+                                            const params = Object.fromEntries(searchParams.entries());
+                                            setSearchParams({
+                                                ...params,
+                                                sort: e.target.value.includes("Price")
+                                                    ? e.target.value.split("Price: ")[1]
+                                                    : e.target.value,
+                                                page: "1"
+                                            });
+                                        }}>
+                                    <option>Most Popular</option>
                                     <option>Newest</option>
                                     <option>Price: Low to High</option>
                                     <option>Price: High to Low</option>
@@ -283,10 +279,14 @@ const ListProducts = () => {
                                                 <span className="rating-val">({product.ratingsQuantity})</span>
                                             </div>
 
-                                            <div className="price-row">
+                                            <div className="price-row-products">
                                                 <span className="price-now">${product.finalPrice}</span>
-                                                <span className="price-old">${product.originalPrice}</span>
-                                                <span className="disc-badge">-{product.discount}%</span>
+                                                {product.discount > 0 &&
+                                                    <>
+                                                        <span className="price-old">${product.originalPrice}</span>
+                                                        <span className="disc-badge">-{product.discount}%</span>
+                                                    </>
+                                                }
                                             </div>
 
                                         </div>

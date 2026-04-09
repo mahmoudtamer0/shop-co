@@ -430,3 +430,39 @@
              width: 100px;
          }
      }
+
+
+     @keyframes shimmer {
+         0% {
+             background-position: -400px 0;
+         }
+
+         100% {
+             background-position: 400px 0;
+         }
+     }
+
+     .sk {
+         background: linear-gradient(90deg,
+                 #e8e8e8 25%,
+                 #f5f5f5 50%,
+                 #e8e8e8 75%);
+         background-size: 800px 100%;
+         animation: shimmer 1.4s infinite;
+         border-radius: 4px;
+     }
+
+     .sk-line {
+         height: 13px;
+     }
+
+     .sk-btn {
+         height: 44px;
+         border-radius: 5px;
+         width: 100%;
+         margin-top: 18px;
+     }
+
+     .qty-btn:disabled {
+         cursor: not-allowed;
+     }

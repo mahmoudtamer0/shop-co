@@ -12,6 +12,8 @@ import ProtectedRoute from './ProtectedRoute'
 import Register from './pages/register/Register'
 import Otp from './pages/verify-otp/VerifyOtp'
 import ProtectOtpRoute from './ProtectOtpRoute'
+import CheckoutPage from './pages/checkoutPage/Checkout'
+import MyOrderPage from './pages/MyOrderPage'
 function App() {
 
 
@@ -55,6 +57,24 @@ function App() {
             path="/cart"
             element={
               <CartPage />
+            }
+          />
+
+          <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute>
+                <CheckoutPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/my-orders"
+            element={
+              <ProtectedRoute>
+                <MyOrderPage />
+              </ProtectedRoute>
             }
           />
         </Routes>

@@ -426,7 +426,7 @@ input[type="range"] {
 }
 
 /* Price */
-.price-row {
+.price-row-products {
     display: flex;
     align-items: center;
     gap: 8px;

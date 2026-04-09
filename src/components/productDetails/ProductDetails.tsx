@@ -10,7 +10,17 @@ const ProductDetails = () => {
     const [mainImg, setMainImg] = useState(0)
     const [selectedVariant, setSelectedVariant] = useState(0)
     const [quantity, setQuantity] = useState(1)
-
+    const [errorMessage, setErrorMessage] = useState("")
+    const [isInCart, setIsInCart] = useState(false)
+    const [available, setAvailble] = useState(true)
+    const [cart, setCart] = useState<any[]>(() => {
+        try {
+            const data = localStorage.getItem("cart");
+            return data ? JSON.parse(data) : [];
+        } catch {
+            return [];
+        }
+    });
 
     useEffect(() => {
         window.scrollTo({
@@ -21,24 +31,53 @@ const ProductDetails = () => {
             .then(data => setProduct(data.data))
     }, [prodId])
 
-    const addToCart = async (product: Product) => {
-        let cart: any[] = [];
+    useEffect(() => {
 
-        const storedCart = localStorage.getItem("cart");
+        if (!product?._id) return;
+        const incart = cart.find(
+            (item: any) => item.id.toString() === product._id && item.size == product.variants[selectedVariant].size
+        );
 
-        if (storedCart) {
-            cart = JSON.parse(storedCart);
+        if (incart) {
+            setIsInCart(true)
+        } else {
+            setIsInCart(false)
         }
 
-        const existing = cart.find((item: any) => item.id == product._id && item.size == product.variants[selectedVariant].size);
 
-        if (existing) {
-            console.log("exist")
-            existing.quantity += quantity;
+    }, [product, cart, selectedVariant, errorMessage]);
+
+    useEffect(() => {
+
+        if (!product?._id) return;
+
+        if (product.variants[selectedVariant].stock < 1) {
+            setAvailble(false)
         } else {
-            console.log("added")
+            setAvailble(true)
+        }
 
-            cart.push({
+    }, [product, cart, selectedVariant, errorMessage])
+
+    const addToCart = async (product: Product) => {
+
+        setErrorMessage("");
+
+        let updatedCart = [...cart];
+
+        const existingIndex = updatedCart.findIndex(
+            (item: any) =>
+                item.id == product._id &&
+                item.size == product.variants[selectedVariant].size
+        );
+
+        if (existingIndex !== -1) {
+            updatedCart[existingIndex] = {
+                ...updatedCart[existingIndex],
+                quantity: updatedCart[existingIndex].quantity + quantity
+            };
+        } else {
+            updatedCart.push({
                 id: product._id.toString(),
                 productImage: product.productImages[0].url,
                 title: product.title,
@@ -47,27 +86,35 @@ const ProductDetails = () => {
             });
         }
 
+
         const response = await fetch(`${import.meta.env.VITE_API_URL}/products/calculate-cart`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                cart: cart
+                cart: updatedCart
             }),
-        })
+        });
 
-        const data = await response.json()
+        const data = await response.json();
 
         if (response.ok) {
             localStorage.setItem("cart", JSON.stringify(data.newItems));
-            localStorage.setItem("subTotal", JSON.stringify(data.subTotal));
-            localStorage.setItem("delivery", JSON.stringify(data.delivery));
-            localStorage.setItem("tax", JSON.stringify(data.tax));
-            localStorage.setItem("totalCart", JSON.stringify(data.totalCart));
+            setCart(data.newItems);
+            return;
         }
+        setIsInCart(false)
+        setErrorMessage(data.message);
     };
 
+    useEffect(() => {
+        setQuantity(1);
+        setErrorMessage("");
+        setSelectedVariant(0);
+        setIsInCart(false);
+        setAvailble(true);
+    }, [prodId]);
     return (
         <div className="container">
             <section className="product-section container">
@@ -106,7 +153,7 @@ const ProductDetails = () => {
                         <span className="rating-text">{product?.averageRate}/5</span>
                     </div>
 
-                    <div className="price-row">
+                    <div className="price-row-products">
                         <span className="price-current">${product?.finalPrice}</span>
                         {product && product.discount > 0 ?
                             <>
@@ -133,20 +180,37 @@ const ProductDetails = () => {
                         ))}
                     </div>
 
-                    <div className="cart-row">
-                        <div className="qty-control">
-                            <button className="qty-btn" onClick={() => setQuantity(quantity > 1 ? quantity - 1 : quantity)}>-</button>
-                            <div className="qty-value" id="qty">{quantity}</div>
-                            <button className="qty-btn" onClick={() => setQuantity(quantity + 1)}>+</button>
-                        </div>
-                        <button className="btn-cart" onClick={() => {
-                            if (!product) return;
+                    {!isInCart ?
+                        <div className="cart-row">
 
-                            addToCart(
-                                product
-                            );
-                        }}>Add to Cart</button>
-                    </div>
+
+                            {!available ?
+                                <div className="error-msg">
+                                    Out of stock
+                                </div> :
+                                <div className="qty-control">
+                                    <button className="qty-btn" onClick={() => setQuantity(quantity > 1 ? quantity - 1 : quantity)}>-</button>
+                                    <div className="qty-value" id="qty">{quantity}</div>
+                                    <button className="qty-btn" onClick={() => setQuantity(quantity + 1)}>+</button>
+                                </div>
+                            }
+                            <button className="btn-cart" disabled={!available} onClick={() => {
+                                if (!product) return;
+                                addToCart(
+                                    product
+                                );
+                            }}>Add to Cart</button>
+                        </div>
+                        :
+                        <div className="cart-row">
+                            <button className="btn-cart" onClick={() => {
+                                if (!product) return;
+                            }}>Remove From Cart</button>
+                        </div>
+
+                    }
+
+                    {errorMessage.length > 0 && <div className='error-msg'>{errorMessage}</div>}
                 </div>
             </section>
 

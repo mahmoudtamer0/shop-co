@@ -9,7 +9,7 @@ interface Thumbnail {
 
 interface Variants {
     size: string;
-    stock: string
+    stock: number
 }
 
 export interface Product {
