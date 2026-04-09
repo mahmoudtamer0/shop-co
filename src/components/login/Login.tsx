@@ -96,7 +96,7 @@ export default function Login() {
     const handleGoogle = () => {
         setGoogleLoading(true);
 
-        window.location.href = `${import.meta.env.VITE_API_URL}/api/v1/users/google`;
+        window.location.href = `${import.meta.env.VITE_API_URL}/users/google`;
     };
 
     return (
