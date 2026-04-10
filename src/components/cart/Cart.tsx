@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import "./cart.css"
 import type { CartItem } from "../../types/cart";
+import { calculateCart } from "../../api/calculateCart";
 
 const Cart = () => {
 
@@ -16,32 +17,6 @@ const Cart = () => {
     const [totalCart, setTotalCart] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
     const [itemErrors, setItemErrors] = useState<Record<string, string>>({});
-
-    const askServer = async (cart: CartItem[]) => {
-
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/products/calculate-cart`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                cart: cart
-            }),
-        });
-
-        const data = await response.json();
-
-        return { response, data }
-
-        // if (response.ok) {
-        //     setCartItems(data.newItems);
-        //     setSubTotal(data.subTotal);
-        //     setDelivery(data.delivery);
-        //     setTotalCart(data.totalCart);
-        //     return;
-        // }
-
-    }
 
     const updateQty = async (id: string, size: string, delta: number) => {
         setIsLoading(true)
@@ -63,12 +38,13 @@ const Cart = () => {
         });
 
 
-        const getCart = await askServer(updatedCart)
+        const response = await calculateCart(updatedCart)
+        const data = await response.json()
 
-        if (!getCart.response.ok) {
+        if (!response.ok) {
             setItemErrors((prev) => ({
                 ...prev,
-                [`${getCart.data.productId}-${getCart.data.size}`]: getCart.data.message
+                [`${data.productId}-${data.size}`]: data.message
             }));
             setIsLoading(false)
             return;
@@ -79,14 +55,14 @@ const Cart = () => {
             delete copy[`${id}-${size}`];
             return copy;
         });
-        localStorage.setItem("cart", JSON.stringify(getCart.data.newItems));
+        localStorage.setItem("cart", JSON.stringify(data.newItems));
 
-        setCartItems([...getCart.data.newItems]);
-        setSubTotal(getCart.data.subTotal);
-        setDelivery(getCart.data.delivery);
-        setTax(getCart.data.tax);
-        setTaxPercent(getCart.data.taxPercent);
-        setTotalCart(getCart.data.totalCart);
+        setCartItems([...data.newItems]);
+        setSubTotal(data.subTotal);
+        setDelivery(data.delivery);
+        setTax(data.tax);
+        setTaxPercent(data.taxPercent);
+        setTotalCart(data.totalCart);
 
 
         setIsLoading(false)
@@ -105,16 +81,17 @@ const Cart = () => {
             (item: any) => !(item.id === prod.id && item.size === prod.size)
         );
 
-        const getCart = await askServer(removeCart);
+        const response = await calculateCart(removeCart);
+        const data = await response.json()
 
-        if (getCart.response.ok) {
-            setCartItems(getCart.data.newItems);
-            setSubTotal(getCart.data.subTotal);
-            setDelivery(getCart.data.delivery);
-            setTax(getCart.data.tax);
-            setTaxPercent(getCart.data.taxPercent);
-            setTotalCart(getCart.data.totalCart);
-            localStorage.setItem("cart", JSON.stringify(getCart.data.newItems));
+        if (response.ok) {
+            setCartItems(data.newItems);
+            setSubTotal(data.subTotal);
+            setDelivery(data.delivery);
+            setTax(data.tax);
+            setTaxPercent(data.taxPercent);
+            setTotalCart(data.totalCart);
+            localStorage.setItem("cart", JSON.stringify(data.newItems));
             return;
         }
 
@@ -130,25 +107,26 @@ const Cart = () => {
         if (storedCart) {
             cart = JSON.parse(storedCart);
         }
-        const getCart = await askServer(cart)
+        const response = await calculateCart(cart)
+        const data = await response.json()
 
-        if (!getCart.response.ok) {
+        if (!response.ok) {
             setCartItems(cart);
             setItemErrors((prev) => ({
                 ...prev,
-                [`${getCart.data.productId}-${getCart.data.size}`]: "product unavailble"
+                [`${data.productId}-${data.size}`]: "product unavailble"
             }));
             return;
         }
 
-        if (getCart.response.ok) {
-            setCartItems(getCart.data.newItems);
-            setSubTotal(getCart.data.subTotal);
-            setDelivery(getCart.data.delivery);
-            setTax(getCart.data.tax);
-            setTaxPercent(getCart.data.taxPercent);
-            setTotalCart(getCart.data.totalCart);
-            localStorage.setItem("cart", JSON.stringify(getCart.data.newItems));
+        if (response.ok) {
+            setCartItems(data.newItems);
+            setSubTotal(data.subTotal);
+            setDelivery(data.delivery);
+            setTax(data.tax);
+            setTaxPercent(data.taxPercent);
+            setTotalCart(data.totalCart);
+            localStorage.setItem("cart", JSON.stringify(data.newItems));
             return;
         }
 
@@ -163,7 +141,6 @@ const Cart = () => {
         <div className="cart-root">
 
             <div className="cart-page">
-                {/* Breadcrumb */}
                 <div className="cart-breadcrumb">
                     <Link to="/">Home</Link>
                     <span className="bc-sep">›</span>
@@ -181,7 +158,6 @@ const Cart = () => {
                     </div>
                 ) : (
                     <div className="cart-layout">
-                        {/* Items */}
                         <div className="cart-items-panel">
                             {cartItems.map((item: any) => (
                                 <div key={`${item.id}-${item.size}`}

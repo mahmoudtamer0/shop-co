@@ -3,12 +3,21 @@ import './nav.css'
 import { Link } from "react-router-dom";
 import type { Product } from '../../types/product'
 
+const categories = [
+    { label: "mens", path: "/products?category=mens" },
+    { label: "womens", path: "/products?category=womens" },
+    { label: "kids", path: "/products?category=kids" },
+    { label: "sports", path: "/products?category=sports" },
+]
+
 const Nav = () => {
     const [search, setSearch] = useState("")
     const [showResults, setShowResults] = useState(false)
     const [results, setResults] = useState<Product[]>([])
     const [menuOpen, setMenuOpen] = useState(false)
     const [searchOpen, setSearchOpen] = useState(false)
+    const [shopOpen, setShopOpen] = useState(false)
+    const shopRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         if (search.length > 0) {
@@ -34,6 +43,18 @@ const Nav = () => {
         return () => { document.body.style.overflow = '' }
     }, [menuOpen])
 
+    const hoverTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (shopRef.current && !shopRef.current.contains(e.target as Node)) {
+                setShopOpen(false)
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
+    }, [])
+
     const handleResultClick = () => {
         setShowResults(false)
         setSearch("")
@@ -47,13 +68,49 @@ const Nav = () => {
                     <div className='logo'><Link to={'/'}>SHOP.CO</Link></div>
 
                     <div className='nav-links-div'>
-                        <a href="" className='d-flex align-items-center gap-10'>
-                            <span>Shop</span>
-                            <i className="fa-solid fa-angle-down"></i>
-                        </a>
+                        {/* Shop Dropdown */}
+                        <div
+                            className='shop-dropdown-wrapper'
+                            ref={shopRef}
+                            onMouseEnter={() => {
+                                if (hoverTimeout.current) clearTimeout(hoverTimeout.current)
+                                setShopOpen(true)
+                            }}
+                            onMouseLeave={() => {
+                                hoverTimeout.current = setTimeout(() => setShopOpen(false), 150)
+                            }}
+                        >
+                            <button
+                                className='shop-trigger'
+                                onClick={() => setShopOpen(prev => !prev)}
+                                aria-haspopup="true"
+                                aria-expanded={shopOpen}
+                            >
+                                <span>Shop</span>
+                                <i className={`fa-solid fa-angle-down shop-arrow ${shopOpen ? 'rotated' : ''}`}></i>
+                            </button>
+
+                            <div className={`shop-mega-dropdown ${shopOpen ? 'visible' : ''}`}>
+                                <p className='shop-dropdown-title'>Browse Categories</p>
+                                <ul className='shop-dropdown-list'>
+                                    {categories.map((cat) => (
+                                        <li key={cat.path}>
+                                            <Link
+                                                to={cat.path}
+                                                onClick={() => setShopOpen(false)}
+                                            >
+                                                {cat.label}
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+
                         <Link to="/products">All Products</Link>
                         <Link to="/on-sale">On Sale</Link>
                         <Link to="/new-arrivals">New Arrivals</Link>
+                        <Link to="/my-orders">My Orders</Link>
                     </div>
 
                     <div className='nav-inp-div'>
@@ -75,7 +132,7 @@ const Nav = () => {
                                 {results.length > 0 ? (
                                     <ul className="search-results-list">
                                         {results.map((item) => (
-                                            <Link to={`/products/${item._id}`} key={item._id} className="search-result-item" onClick={handleResultClick} >
+                                            <Link to={`/products/${item._id}`} key={item._id} className="search-result-item" onClick={handleResultClick}>
                                                 <div className="result-img">
                                                     <img src={item.productImages[0].url} alt={item.title} />
                                                 </div>
@@ -103,7 +160,9 @@ const Nav = () => {
                     </div>
 
                     <div className='nav-icons-div'>
-                        <Link style={{ textDecoration: "none", color: "black" }} to={"/cart"}><i className="fa-solid fa-cart-shopping"></i></Link>
+                        <Link style={{ textDecoration: "none", color: "black" }} to={"/cart"}>
+                            <i className="fa-solid fa-cart-shopping"></i>
+                        </Link>
                         <div><i className="fa-regular fa-circle-user"></i></div>
                     </div>
 
@@ -115,7 +174,9 @@ const Nav = () => {
                         >
                             <i className="fa-solid fa-magnifying-glass"></i>
                         </button>
-                        <Link style={{ textDecoration: "none", color: "black" }} to={"/cart"}><i className="fa-solid fa-cart-shopping"></i></Link>
+                        <Link style={{ textDecoration: "none", color: "black" }} to={"/cart"}>
+                            <i className="fa-solid fa-cart-shopping"></i>
+                        </Link>
                         <button
                             className={`hamburger ${menuOpen ? 'open' : ''}`}
                             onClick={() => setMenuOpen(prev => !prev)}
@@ -148,7 +209,7 @@ const Nav = () => {
                             {results.length > 0 ? (
                                 <ul className="search-results-list">
                                     {results.map((item) => (
-                                        <Link to={`/products/${item._id}`} key={item._id} className="search-result-item" >
+                                        <Link to={`/products/${item._id}`} key={item._id} className="search-result-item">
                                             <div className="result-img">
                                                 <img src={item.productImages[0].url} alt={item.title} />
                                             </div>
@@ -188,15 +249,35 @@ const Nav = () => {
                     </button>
                 </div>
                 <ul className="drawer-links">
-                    <li><a href="" onClick={() => setMenuOpen(false)}>Shop <i className="fa-solid fa-angle-down"></i></a></li>
+                    {/* Shop accordion في الـ drawer */}
+                    <li>
+                        <button
+                            className='drawer-shop-btn'
+                            onClick={() => setShopOpen(prev => !prev)}
+                        >
+                            Shop
+                            <i className={`fa-solid fa-angle-down ${shopOpen ? 'rotated' : ''}`}></i>
+                        </button>
+                        <ul className={`drawer-categories ${shopOpen ? 'open' : ''}`}>
+                            {categories.map((cat) => (
+                                <li key={cat.path}>
+                                    <Link to={cat.path} onClick={() => { setMenuOpen(false); setShopOpen(false) }}>
+                                        {cat.label}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </li>
                     <li><Link to="/products" onClick={() => setMenuOpen(false)}>All Products</Link></li>
                     <li><Link to="/on-sale" onClick={() => setMenuOpen(false)}>On Sale</Link></li>
                     <li><Link to="/new-arrivals" onClick={() => setMenuOpen(false)}>New Arrivals</Link></li>
+                    <li><Link to="/my-orders" onClick={() => setMenuOpen(false)}>My Orders</Link></li>
                     <li><Link to="/login" onClick={() => setMenuOpen(false)}>Login</Link></li>
                 </ul>
                 <div className="drawer-footer">
-
-                    <div className="drawer-icon"><i className="fa-regular fa-circle-user"></i> My Account</div>
+                    <div className="drawer-icon">
+                        <i className="fa-regular fa-circle-user"></i> My Account
+                    </div>
                 </div>
             </div>
         </>

@@ -96,7 +96,7 @@ const ListProducts = () => {
                                         category: "",
                                         page: "1"
                                     });
-                                }}><span>All<svg width="6" height="10" viewBox="0 0 6 10"><path d="M1 1l4 4-4 4" stroke="#111" stroke-width="1.4" fill="none" stroke-linecap="round" /></svg></span></li>
+                                }}><span className={`${category == "" ? "active" : ""}`}>All<svg width="6" height="10" viewBox="0 0 6 10"><path d="M1 1l4 4-4 4" stroke="#111" stroke-width="1.4" fill="none" stroke-linecap="round" /></svg></span></li>
                                 {catigories.length > 0 &&
                                     catigories.map(cat => (
                                         <li onClick={() => {
@@ -107,7 +107,7 @@ const ListProducts = () => {
                                                 type: "",
                                                 page: "1"
                                             });
-                                        }}><span>{cat.name}<svg width="6" height="10" viewBox="0 0 6 10"><path d="M1 1l4 4-4 4" stroke="#111" stroke-width="1.4" fill="none" stroke-linecap="round" /></svg></span></li>
+                                        }}><span className={`${category == cat.name ? "active" : ""}`}>{cat.name}<svg width="6" height="10" viewBox="0 0 6 10"><path d="M1 1l4 4-4 4" stroke="#111" stroke-width="1.4" fill="none" stroke-linecap="round" /></svg></span></li>
                                     ))
                                 }
                             </ul>
@@ -122,7 +122,7 @@ const ListProducts = () => {
                                         category: "",
                                         page: "1"
                                     });
-                                }}><span>All<svg width="6" height="10" viewBox="0 0 6 10"><path d="M1 1l4 4-4 4" stroke="#111" stroke-width="1.4" fill="none" stroke-linecap="round" /></svg></span></li>
+                                }}><span className={`${type == "" ? "active" : ""}`}>All<svg width="6" height="10" viewBox="0 0 6 10"><path d="M1 1l4 4-4 4" stroke="#111" stroke-width="1.4" fill="none" stroke-linecap="round" /></svg></span></li>
                                 {catigories.length > 0 &&
                                     ["shirt", "short", "shoes", "dress", "sweatpants", "hoodie", "jacket", "bag",].map(cat => (
                                         <li onClick={() => {
@@ -132,7 +132,7 @@ const ListProducts = () => {
                                                 type: cat,
                                                 page: "1"
                                             });
-                                        }}><span>{cat}<svg width="6" height="10" viewBox="0 0 6 10"><path d="M1 1l4 4-4 4" stroke="#111" stroke-width="1.4" fill="none" stroke-linecap="round" /></svg></span></li>
+                                        }}><span className={`${type == cat ? "active" : ""}`}>{cat}<svg width="6" height="10" viewBox="0 0 6 10"><path d="M1 1l4 4-4 4" stroke="#111" stroke-width="1.4" fill="none" stroke-linecap="round" /></svg></span></li>
                                     ))
                                 }
                             </ul>
@@ -154,24 +154,6 @@ const ListProducts = () => {
                         </div>
 
 
-                        <div className="filter-section">
-                            <div className="filter-title open" >
-                                Colors
-                                <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="#111" stroke-width="1.5" fill="none" stroke-linecap="round" /></svg>
-                            </div>
-                            <div className="color-grid">
-                                <div className="color-dot" style={{ background: "#6ec96e;" }} ></div>
-                                <div className="color-dot" style={{ background: "#e53935;" }} ></div>
-                                <div className="color-dot" style={{ background: "#f5a623;" }} ></div>
-                                <div className="color-dot" style={{ background: "#ffeb3b;" }} ></div>
-                                <div className="color-dot" style={{ background: "#fff; border:1.5px solid #e0e0e0;" }} ></div>
-                                <div className="color-dot selected" style={{ background: "#6ec6f5;" }} ></div>
-                                <div className="color-dot" style={{ background: "#7e57c2;" }} ></div>
-                                <div className="color-dot" style={{ background: "#e91e7a;" }} ></div>
-                                <div className="color-dot" style={{ background: "#111;" }} ></div>
-                            </div>
-                        </div>
-
 
                         <div className="filter-section">
                             <div className="filter-title open" >
@@ -191,20 +173,6 @@ const ListProducts = () => {
                             </div>
                         </div>
 
-
-                        <div className="filter-section">
-                            <div className="filter-title open" >
-                                Dress Style
-                                <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="#111" stroke-width="1.5" fill="none" stroke-linecap="round" /></svg>
-                            </div>
-                            <ul className="style-list">
-                                <li><a href="#" className="active">Casual <svg width="6" height="10" viewBox="0 0 6 10"><path d="M1 1l4 4-4 4" stroke="#111" stroke-width="1.4" fill="none" stroke-linecap="round" /></svg></a></li>
-                                <li><a href="#">Formal <svg width="6" height="10" viewBox="0 0 6 10"><path d="M1 1l4 4-4 4" stroke="#111" stroke-width="1.4" fill="none" stroke-linecap="round" /></svg></a></li>
-                                <li><a href="#">Party <svg width="6" height="10" viewBox="0 0 6 10"><path d="M1 1l4 4-4 4" stroke="#111" stroke-width="1.4" fill="none" stroke-linecap="round" /></svg></a></li>
-                                <li><a href="#">Gym <svg width="6" height="10" viewBox="0 0 6 10"><path d="M1 1l4 4-4 4" stroke="#111" stroke-width="1.4" fill="none" stroke-linecap="round" /></svg></a></li>
-                            </ul>
-                        </div>
-
                         <button className="apply-btn" onClick={() => setFiltersOpen(false)}>Apply Filter</button>
                     </aside>
 
@@ -212,7 +180,7 @@ const ListProducts = () => {
                     <div className="main-content">
 
                         <div className="content-header">
-                            <h1>Casual</h1>
+                            <h1 className='section-title'>{category != "" ? category.charAt(0).toUpperCase() + category.slice(1) : "Casual"}</h1>
                             <span className="mobile-result-count">{results} of {totalProducts} Products</span>
                             <div className="sort-meta">
                                 <span className="result-count">Showing {results} of {totalProducts} Products</span>

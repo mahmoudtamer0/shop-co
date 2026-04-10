@@ -3,6 +3,7 @@ import "./ProductDetails.css"
 import { useParams } from 'react-router-dom'
 import type { Product } from '../../types/product'
 import ProductsHome from '../productsHome/productsHome'
+import { addToCartApi } from '../../api/addToCart'
 
 const ProductDetails = () => {
     const { prodId } = useParams()
@@ -45,7 +46,7 @@ const ProductDetails = () => {
         }
 
 
-    }, [product, cart, selectedVariant, errorMessage]);
+    }, [product, cart, selectedVariant]);
 
     useEffect(() => {
 
@@ -57,56 +58,35 @@ const ProductDetails = () => {
             setAvailble(true)
         }
 
-    }, [product, cart, selectedVariant, errorMessage])
+    }, [product, cart, selectedVariant])
 
     const addToCart = async (product: Product) => {
 
         setErrorMessage("");
 
-        let updatedCart = [...cart];
-
-        const existingIndex = updatedCart.findIndex(
-            (item: any) =>
-                item.id == product._id &&
-                item.size == product.variants[selectedVariant].size
-        );
-
-        if (existingIndex !== -1) {
-            updatedCart[existingIndex] = {
-                ...updatedCart[existingIndex],
-                quantity: updatedCart[existingIndex].quantity + quantity
-            };
-        } else {
-            updatedCart.push({
-                id: product._id.toString(),
-                productImage: product.productImages[0].url,
-                title: product.title,
-                quantity: quantity,
-                size: product.variants[selectedVariant].size
-            });
-        }
-
-
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/products/calculate-cart`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                cart: updatedCart
-            }),
-        });
-
+        const response = await addToCartApi(product, quantity, product.variants[selectedVariant].size)
         const data = await response.json();
 
         if (response.ok) {
-            localStorage.setItem("cart", JSON.stringify(data.newItems));
-            setCart(data.newItems);
+            const updatedCart = [...cart, data.product];
+            setCart(updatedCart);
+            localStorage.setItem("cart", JSON.stringify(updatedCart));
             return;
         }
         setIsInCart(false)
         setErrorMessage(data.message);
     };
+
+    const removeFromCart = async (product: Product) => {
+
+        const updatedCart = cart.filter(item =>
+            !(item.id === product._id && item.size === product.variants[selectedVariant].size)
+        );
+        localStorage.setItem("cart", JSON.stringify(updatedCart))
+        setCart(updatedCart);
+        setIsInCart(false)
+
+    }
 
     useEffect(() => {
         setQuantity(1);
@@ -205,6 +185,7 @@ const ProductDetails = () => {
                         <div className="cart-row">
                             <button className="btn-cart" onClick={() => {
                                 if (!product) return;
+                                removeFromCart(product)
                             }}>Remove From Cart</button>
                         </div>
 

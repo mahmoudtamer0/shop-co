@@ -1,8 +1,3 @@
-
-
-
-
-
 export const fetchWithAuth = async (url: string, options: any = {}) => {
     let token = localStorage.getItem("token");
 

@@ -115,6 +115,7 @@
     display: flex;
     flex-direction: column;
     gap: 2px;
+    padding-left: 1rem;
 }
 
 .cat-list li span {
@@ -126,7 +127,20 @@
     text-decoration: none;
     padding: 5px 0;
     transition: color 0.15s;
+    padding: 7px;
     cursor: pointer;
+}
+
+.cat-list li span.active {
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+}
+
+.cat-list li span.active:hover {
+    background-color: black;
+    color: white;
+    border-radius: 5px;
 }
 
 .cat-list li span:hover {
