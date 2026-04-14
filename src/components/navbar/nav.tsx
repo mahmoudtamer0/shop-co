@@ -130,7 +130,7 @@ const Nav = () => {
                                 <p className='shop-dropdown-title'>Browse Categories</p>
                                 <ul className='shop-dropdown-list'>
                                     {categories.map((cat) => (
-                                        <li key={cat.path}>
+                                        <li key={cat.label}>
                                             <Link
                                                 to={cat.path}
                                                 onClick={() => setShopOpen(false)}

@@ -241,7 +241,7 @@ export default function Login() {
                                 <span className="checkmark" />
                                 Remember me
                             </label>
-                            <a href="#" className="forgot-link">Forgot password?</a>
+                            <a className="forgot-link">Forgot password?</a>
                         </div>
 
                         <div>

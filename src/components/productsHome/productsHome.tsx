@@ -27,7 +27,7 @@ const ProductsHome = ({ heading, filter }: { heading: string, filter: string }) 
 
                     {products.length > 0 &&
                         products?.map((product: Product) => (
-                            <div className="col-6 col-md-3">
+                            <div key={product._id} className="col-6 col-md-3">
 
                                 <ProductCard product={product} />
                             </div>

@@ -163,7 +163,7 @@ const ProductDetails = () => {
                     <p className="label">Choose Size</p>
                     <div className="size-row">
                         {product?.variants?.map((variant, index) => (
-                            <button className={`size-btn ${index == selectedVariant ? "active" : null}`}
+                            <button key={variant.size} className={`size-btn ${index == selectedVariant ? "active" : null}`}
                                 onClick={() => setSelectedVariant(index)}
                             >{variant.size}</button>
                         ))}

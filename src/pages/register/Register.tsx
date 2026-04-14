@@ -297,9 +297,9 @@ export default function Register() {
                                 <span className="checkmark" />
                                 <span>
                                     I agree to the{" "}
-                                    <a href="#" className="terms-link">Terms of Service</a>
+                                    <a className="terms-link">Terms of Service</a>
                                     {" "}and{" "}
-                                    <a href="#" className="terms-link">Privacy Policy</a>
+                                    <a className="terms-link">Privacy Policy</a>
                                 </span>
                             </label>
                             {errors.agreeTerms && <span className="error-msg">{errors.agreeTerms}</span>}

@@ -54,7 +54,7 @@ const ListProducts = () => {
         <>
             <div className='container'>
                 <div className="breadcrumb-bar">
-                    <a href="#">Home</a> &nbsp;›&nbsp; <span>Casual</span>
+                    <a>Home</a> &nbsp;›&nbsp; <span>Casual</span>
                 </div>
 
 
@@ -97,10 +97,10 @@ const ListProducts = () => {
                                         category: "",
                                         page: "1"
                                     });
-                                }}><span className={`${category == "" ? "active" : ""}`}>All<svg width="6" height="10" viewBox="0 0 6 10"><path d="M1 1l4 4-4 4" stroke="#111" stroke-width="1.4" fill="none" stroke-linecap="round" /></svg></span></li>
+                                }}><span className={`${category == "" ? "active" : ""}`}>All<svg width="6" height="10" viewBox="0 0 6 10"><path d="M1 1l4 4-4 4" stroke="#111" strokeWidth="1.4" fill="none" strokeLinecap="round" /></svg></span></li>
                                 {catigories.length > 0 &&
                                     catigories.map(cat => (
-                                        <li onClick={() => {
+                                        <li key={cat.id} onClick={() => {
                                             const params = Object.fromEntries(searchParams.entries());
                                             setSearchParams({
                                                 ...params,
@@ -108,7 +108,7 @@ const ListProducts = () => {
                                                 type: "",
                                                 page: "1"
                                             });
-                                        }}><span className={`${category == cat.name ? "active" : ""}`}>{cat.name}<svg width="6" height="10" viewBox="0 0 6 10"><path d="M1 1l4 4-4 4" stroke="#111" stroke-width="1.4" fill="none" stroke-linecap="round" /></svg></span></li>
+                                        }}><span className={`${category == cat.name ? "active" : ""}`}>{cat.name}<svg width="6" height="10" viewBox="0 0 6 10"><path d="M1 1l4 4-4 4" stroke="#111" strokeWidth="1.4" fill="none" strokeLinecap="round" /></svg></span></li>
                                     ))
                                 }
                             </ul>
@@ -122,17 +122,17 @@ const ListProducts = () => {
                                         ...params,
                                         type: "",
                                     });
-                                }}><span className={`${type == "" ? "active" : ""}`}>All<svg width="6" height="10" viewBox="0 0 6 10"><path d="M1 1l4 4-4 4" stroke="#111" stroke-width="1.4" fill="none" stroke-linecap="round" /></svg></span></li>
+                                }}><span className={`${type == "" ? "active" : ""}`}>All<svg width="6" height="10" viewBox="0 0 6 10"><path d="M1 1l4 4-4 4" stroke="#111" strokeWidth="1.4" fill="none" strokeLinecap="round" /></svg></span></li>
                                 {catigories.length > 0 &&
                                     ["shirt", "short", "shoes", "dress", "sweatpants", "hoodie", "jacket", "bag",].map(cat => (
-                                        <li onClick={() => {
+                                        <li key={cat} onClick={() => {
                                             const params = Object.fromEntries(searchParams.entries());
                                             setSearchParams({
                                                 ...params,
                                                 type: cat,
                                                 page: "1"
                                             });
-                                        }}><span className={`${type == cat ? "active" : ""}`}>{cat}<svg width="6" height="10" viewBox="0 0 6 10"><path d="M1 1l4 4-4 4" stroke="#111" stroke-width="1.4" fill="none" stroke-linecap="round" /></svg></span></li>
+                                        }}><span className={`${type == cat ? "active" : ""}`}>{cat}<svg width="6" height="10" viewBox="0 0 6 10"><path d="M1 1l4 4-4 4" stroke="#111" strokeWidth="1.4" fill="none" strokeLinecap="round" /></svg></span></li>
                                     ))
                                 }
                             </ul>
@@ -141,7 +141,7 @@ const ListProducts = () => {
                         <div className="filter-section">
                             <div className="filter-title open">
                                 Price
-                                <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="#111" stroke-width="1.5" fill="none" stroke-linecap="round" /></svg>
+                                <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="#111" strokeWidth="1.5" fill="none" strokeLinecap="round" /></svg>
                             </div>
                             <div className="price-labels">
                                 <span>$50</span><span>$200</span>
@@ -158,7 +158,7 @@ const ListProducts = () => {
                         <div className="filter-section">
                             <div className="filter-title open" >
                                 Size
-                                <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="#111" stroke-width="1.5" fill="none" stroke-linecap="round" /></svg>
+                                <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="#111" strokeWidth="1.5" fill="none" strokeLinecap="round" /></svg>
                             </div>
                             <div className="size-grid">
                                 <button className="size-btn" >XX-Small</button>
@@ -254,7 +254,7 @@ const ListProducts = () => {
                                         });
                                     }}
                                         className="page-nav-btn">
-                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="#111" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="#111" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
                                         Previous
                                     </button>
                                     :
@@ -263,7 +263,7 @@ const ListProducts = () => {
                             <div className="page-numbers">
                                 {
                                     [...Array(totalPages)].map((_, i) => (
-                                        <button className={i + 1 == page ? "page-num active" : "page-num"} key={i}
+                                        <button className={i + 1 == page ? "page-num active" : "page-num"} key={_}
                                             onClick={() => {
                                                 const params = Object.fromEntries(searchParams.entries());
 
@@ -289,7 +289,7 @@ const ListProducts = () => {
                                         });
                                     }} className="page-nav-btn">
                                         Next
-                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 2l5 5-5 5" stroke="#111" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 2l5 5-5 5" stroke="#111" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
                                     </button>
                                     : <div></div>
                             }
