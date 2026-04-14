@@ -99,6 +99,9 @@ const Checkout = () => {
 
         localStorage.setItem("cart", "[]");
         setSubmitted(true);
+        window.scrollTo({
+            top: 0
+        })
         setTimeout(() => {
             navigate("/my-orders")
         }, 2000);

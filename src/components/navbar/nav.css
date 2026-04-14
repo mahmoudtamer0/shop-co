@@ -38,6 +38,7 @@
     display: flex;
     flex-direction: row;
     gap: 15px;
+    align-items: center;
 }
 
 /* ══ SEARCH ══ */
@@ -635,6 +636,31 @@
     background: #fafafa;
 }
 
+.signInLink {
+    background-color: black;
+    color: white;
+    text-decoration: none;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 13px;
+}
+
+.signInLink-mobile {
+    background-color: black;
+    color: white;
+    text-decoration: none;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 13px;
+    display: block;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    font-size: 15px;
+}
+
 .drawer-categories.open {
     max-height: 300px;
 }
@@ -650,4 +676,20 @@
 
 .drawer-categories li a:hover {
     background: #f0f0f0;
+}
+
+.cart-icon-wrapper {
+    position: relative;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background: black;
+    color: white;
+    font-size: 11px;
+    padding: 0px 5px;
+    border-radius: 50%;
+    font-weight: bold;
 }

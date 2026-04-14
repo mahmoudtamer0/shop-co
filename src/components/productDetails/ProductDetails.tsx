@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import type { Product } from '../../types/product'
 import ProductsHome from '../productsHome/productsHome'
 import { addToCartApi } from '../../api/addToCart'
+import { useNavigate } from "react-router-dom";
 
 const ProductDetails = () => {
     const { prodId } = useParams()
@@ -14,6 +15,8 @@ const ProductDetails = () => {
     const [errorMessage, setErrorMessage] = useState("")
     const [isInCart, setIsInCart] = useState(false)
     const [available, setAvailble] = useState(true)
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
     const [cart, setCart] = useState<any[]>(() => {
         try {
             const data = localStorage.getItem("cart");
@@ -61,7 +64,7 @@ const ProductDetails = () => {
     }, [product, cart, selectedVariant])
 
     const addToCart = async (product: Product) => {
-
+        setLoading(true)
         setErrorMessage("");
 
         const response = await addToCartApi(product, quantity, product.variants[selectedVariant].size)
@@ -71,10 +74,16 @@ const ProductDetails = () => {
             const updatedCart = [...cart, data.product];
             setCart(updatedCart);
             localStorage.setItem("cart", JSON.stringify(updatedCart));
+            window.dispatchEvent(new Event("cartUpdated"));
+            setLoading(false)
+            setTimeout(() => {
+                navigate("/cart")
+            }, 1000);
             return;
         }
+        setLoading(false)
         setIsInCart(false)
-        setErrorMessage(data.message);
+        setErrorMessage("Unavailable stock");
     };
 
     const removeFromCart = async (product: Product) => {
@@ -179,14 +188,15 @@ const ProductDetails = () => {
                                 addToCart(
                                     product
                                 );
-                            }}>Add to Cart</button>
+                            }}>{loading ? <span className="loader"></span> : "Add to Cart"}
+                            </button>
                         </div>
                         :
                         <div className="cart-row">
                             <button className="btn-cart" onClick={() => {
                                 if (!product) return;
                                 removeFromCart(product)
-                            }}>Remove From Cart</button>
+                            }}>Added To Cart <i className="fa-solid fa-check"></i></button>
                         </div>
 
                     }
@@ -196,6 +206,7 @@ const ProductDetails = () => {
             </section>
 
             <ProductsHome heading='YOU ALSO MIGHT LIKE' filter='' />
+
 
             <div className="tabs-section">
                 <div className="tabs">

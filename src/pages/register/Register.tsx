@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./register.css";
 import type { RegisterForm, Errors } from "../../types/form";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Register() {
     const [form, setForm] = useState<RegisterForm>({
@@ -18,6 +18,7 @@ export default function Register() {
     const [googleLoading, setGoogleLoading] = useState(false);
     const [active, setActive] = useState(false)
     const [responseErrMsg, setResponseErrMsg] = useState("")
+    const location = useLocation();
     const navigate = useNavigate();
 
 

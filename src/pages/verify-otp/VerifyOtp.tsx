@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useLocation } from "react-router-dom";
 import "./Otp.css";
 
 export default function Otp() {
@@ -13,7 +13,7 @@ export default function Otp() {
     const [responseSuccMsg, setResponseSuccMsg] = useState("")
     const [seconds, setSeconds] = useState(40);
     const [canResend, setCanResend] = useState(false);
-
+    const location = useLocation();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -102,11 +102,11 @@ export default function Otp() {
                 return;
             }
 
-            localStorage.setItem("token", data.accesstoken)
+            localStorage.setItem("token", data.accesstoken);
 
+            const redirectTo = location.state?.from?.pathname || "/";
 
-            setLoading(false)
-            navigate("/")
+            navigate(redirectTo, { replace: true });
 
 
 

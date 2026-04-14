@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./login.css";
 import { Link } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface LoginForm {
     email: string;
@@ -17,7 +18,8 @@ export default function Login() {
         email: "",
         password: "",
     });
-
+    const location = useLocation();
+    const navigate = useNavigate();
     const [errors, setErrors] = useState<Errors>({});
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -63,38 +65,42 @@ export default function Login() {
         if (!validate()) return;
 
         try {
-            setActive(true)
+            setActive(true);
             setLoading(true);
 
-
-            console.log(form)
             const response = await fetch(`${import.meta.env.VITE_API_URL}/users/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(form),
-            })
+            });
 
             const data = await response.json();
 
             if (!response.ok) {
-                setResponseErrMsg(data.message || "Something went wrong")
-                console.log("error")
+                setResponseErrMsg(data.message || "Something went wrong");
+                setLoading(false);
+                return;
             }
 
-            console.log(data);
+            localStorage.setItem("token", data.accesstoken);
 
-            setLoading(false);
+            const redirectTo = location.state?.from?.pathname || "/";
+
+            navigate(redirectTo, { replace: true });
 
         } catch (error) {
-            setLoading(false);
             console.error(error);
+        } finally {
+            setLoading(false);
         }
     };
 
     const handleGoogle = () => {
         setGoogleLoading(true);
+        const from = location.state?.from?.pathname || "/";
+        localStorage.setItem("redirectAfterLogin", from);
 
         window.location.href = `${import.meta.env.VITE_API_URL}/users/google`;
     };

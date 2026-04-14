@@ -1,5 +1,6 @@
 export const fetchWithAuth = async (url: string, options: any = {}) => {
     let token = localStorage.getItem("token");
+    console.log("called")
 
     let response = await fetch(url, {
         ...options,
@@ -11,6 +12,7 @@ export const fetchWithAuth = async (url: string, options: any = {}) => {
     });
 
     if (response.status === 401) {
+        console.log("token expired")
 
         const refreshRes = await fetch(`${import.meta.env.VITE_API_URL}/users/refresh`, {
             method: "POST",
@@ -22,6 +24,7 @@ export const fetchWithAuth = async (url: string, options: any = {}) => {
 
         const refreshData = await refreshRes.json();
         if (refreshRes.ok) {
+            console.log("refreshed")
             localStorage.setItem("token", refreshData.accessToken);
 
             response = await fetch(url, {

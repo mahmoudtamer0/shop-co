@@ -1,13 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, use } from 'react'
 import './nav.css'
 import { Link } from "react-router-dom";
 import type { Product } from '../../types/product'
+import { fetchWithAuth } from '../../api/fetchWithAuth';
 
 const categories = [
     { label: "mens", path: "/products?category=mens" },
     { label: "womens", path: "/products?category=womens" },
     { label: "kids", path: "/products?category=kids" },
     { label: "sports", path: "/products?category=sports" },
+]
+
+const navLinks = [
+    { label: "All Products", path: "/products" },
+    { label: "On Sale", path: "/products?sort=Newest&page=1" },
+    { label: "New Arrivals", path: "/products?sort=Newest&page=1" },
+    { label: "My Orders", path: "/my-orders" },
 ]
 
 const Nav = () => {
@@ -18,6 +26,9 @@ const Nav = () => {
     const [searchOpen, setSearchOpen] = useState(false)
     const [shopOpen, setShopOpen] = useState(false)
     const shopRef = useRef<HTMLDivElement>(null)
+    const [cartCount, setCartCount] = useState(0);
+
+    const token = localStorage.getItem("token");
 
     useEffect(() => {
         if (search.length > 0) {
@@ -44,8 +55,34 @@ const Nav = () => {
     }, [menuOpen])
 
     const hoverTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
+    const updateCartCount = () => {
+        const storedCart = localStorage.getItem("cart");
+
+        if (storedCart) {
+            const cart = JSON.parse(storedCart);
+
+            const total = cart.reduce((acc: any, item: { quantity: any; }) => acc + item.quantity, 0);
+
+            setCartCount(total);
+        } else {
+            setCartCount(0);
+        }
+    };
 
     useEffect(() => {
+        const handleCartUpdate = () => {
+            updateCartCount();
+        };
+
+        window.addEventListener("cartUpdated", handleCartUpdate);
+
+        return () => {
+            window.removeEventListener("cartUpdated", handleCartUpdate);
+        };
+    }, []);
+
+    useEffect(() => {
+        updateCartCount();
         const handleClickOutside = (e: MouseEvent) => {
             if (shopRef.current && !shopRef.current.contains(e.target as Node)) {
                 setShopOpen(false)
@@ -64,7 +101,6 @@ const Nav = () => {
         <>
             <nav className="navbar navbar-expand-lg p-3">
                 <div className="container-fluid nav-container">
-                    {/* Logo */}
                     <div className='logo'><Link to={'/'}>SHOP.CO</Link></div>
 
                     <div className='nav-links-div'>
@@ -106,11 +142,14 @@ const Nav = () => {
                                 </ul>
                             </div>
                         </div>
+                        {navLinks.map(link => {
+                            return (
+                                <Link key={link.label} to={link.path}>
+                                    {link.label}
+                                </Link>
+                            )
+                        })}
 
-                        <Link to="/products">All Products</Link>
-                        <Link to="/on-sale">On Sale</Link>
-                        <Link to="/new-arrivals">New Arrivals</Link>
-                        <Link to="/my-orders">My Orders</Link>
                     </div>
 
                     <div className='nav-inp-div'>
@@ -160,10 +199,13 @@ const Nav = () => {
                     </div>
 
                     <div className='nav-icons-div'>
-                        <Link style={{ textDecoration: "none", color: "black" }} to={"/cart"}>
-                            <i className="fa-solid fa-cart-shopping"></i>
-                        </Link>
-                        <div><i className="fa-regular fa-circle-user"></i></div>
+                        <div className="cart-icon-wrapper">
+                            <Link to="/cart">
+                                <i style={{ color: "black" }} className="fa-solid fa-cart-shopping"></i>
+                                {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+                            </Link>
+                        </div>
+                        {!token ? <Link to={""} className='signInLink'>sign-in</Link> : <div><i className="fa-regular fa-circle-user"></i></div>}
                     </div>
 
                     <div className="mobile-actions">
@@ -174,9 +216,12 @@ const Nav = () => {
                         >
                             <i className="fa-solid fa-magnifying-glass"></i>
                         </button>
-                        <Link style={{ textDecoration: "none", color: "black" }} to={"/cart"}>
-                            <i className="fa-solid fa-cart-shopping"></i>
-                        </Link>
+                        <div className="cart-icon-wrapper">
+                            <Link to="/cart">
+                                <i style={{ color: "black" }} className="fa-solid fa-cart-shopping"></i>
+                                {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+                            </Link>
+                        </div>
                         <button
                             className={`hamburger ${menuOpen ? 'open' : ''}`}
                             onClick={() => setMenuOpen(prev => !prev)}
@@ -249,7 +294,6 @@ const Nav = () => {
                     </button>
                 </div>
                 <ul className="drawer-links">
-                    {/* Shop accordion في الـ drawer */}
                     <li>
                         <button
                             className='drawer-shop-btn'
@@ -268,16 +312,20 @@ const Nav = () => {
                             ))}
                         </ul>
                     </li>
-                    <li><Link to="/products" onClick={() => setMenuOpen(false)}>All Products</Link></li>
-                    <li><Link to="/on-sale" onClick={() => setMenuOpen(false)}>On Sale</Link></li>
-                    <li><Link to="/new-arrivals" onClick={() => setMenuOpen(false)}>New Arrivals</Link></li>
-                    <li><Link to="/my-orders" onClick={() => setMenuOpen(false)}>My Orders</Link></li>
-                    <li><Link to="/login" onClick={() => setMenuOpen(false)}>Login</Link></li>
+                    {navLinks.map(link => {
+                        return (
+                            <li>
+                                <Link key={link.label} to={link.path}>
+                                    {link.label}
+                                </Link>
+                            </li>
+                        )
+                    })}
                 </ul>
                 <div className="drawer-footer">
-                    <div className="drawer-icon">
+                    {!token ? <Link to={""} className='signInLink-mobile'>sign-in</Link> : <div className="drawer-icon">
                         <i className="fa-regular fa-circle-user"></i> My Account
-                    </div>
+                    </div>}
                 </div>
             </div>
         </>

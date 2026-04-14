@@ -1,10 +1,12 @@
 import React from 'react'
 import "./catigoriesSection.css"
 import { Link } from 'react-router-dom'
+import SectionTitle from '../sectionTitle/SectionTitle'
 const CatigoriesSection = () => {
     return (
         <div className="style-section container">
-            <h2 className="section-title">BROWSE BY CATIGORIES</h2>
+
+            <SectionTitle title='BROWSE BY CATIGORIES' />
 
             <div className="row g-3 mb-3">
                 <div className="col-5">
