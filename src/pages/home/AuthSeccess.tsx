@@ -10,14 +10,15 @@ function AuthSuccess() {
         const token = params.get("token");
 
         if (token) {
+            localStorage.setItem("token", token)
             const redirectTo =
                 localStorage.getItem("redirectAfterLogin") || "/";
 
             localStorage.removeItem("redirectAfterLogin");
 
-            setTimeout(() => {
-                navigate(redirectTo, { replace: true });
-            }, 100);
+            // setTimeout(() => {
+            //     navigate(redirectTo, { replace: true });
+            // }, 100);
         } else {
             navigate("/login");
         }
