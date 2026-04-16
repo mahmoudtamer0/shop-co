@@ -14,11 +14,11 @@ function AuthSuccess() {
             const redirectTo =
                 localStorage.getItem("redirectAfterLogin") || "/";
 
-            localStorage.removeItem("redirectAfterLogin");
+            setTimeout(() => {
+                navigate(redirectTo, { replace: true });
+                localStorage.removeItem("redirectAfterLogin");
+            }, 100);
 
-            // setTimeout(() => {
-            //     navigate(redirectTo, { replace: true });
-            // }, 100);
         } else {
             navigate("/login");
         }
