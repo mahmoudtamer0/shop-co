@@ -354,28 +354,28 @@
 
 @media (max-width: 450px) {
     .lp-root {
-        max-height: 78vh;
+        max-height: 91vh;
     }
 
     .lp-model-wrap {
         height: 65%;
-        left: 37%;
-        bottom: 235px;
+        left: 29%;
+        bottom: 176px;
 
     }
 
     .lp-title {
-        font-size: 78px;
-        top: 122px;
+        font-size: 77px;
+        top: 95px;
     }
 
     .lp-cta-row {
-        bottom: 225px;
+        bottom: 195px;
     }
 
     .lp-hero {
         height: calc(105vh - 56px);
-        top: -29px
+        top: 32px
     }
 
     .lp-copy {
@@ -383,34 +383,65 @@
     }
 
     .lp-card {
-        left: 303px;
-        top: 30%;
+        left: 271px;
+        top: 46%;
+    }
+
+    .lp-btn {
+        width: 260px;
+        text-align: center;
+        font-size: 13px;
+        padding-top: 18px;
     }
 }
 
 @media (max-width: 400px) {
-    .lp-title {
-        font-size: 67px;
-        top: 122px;
+    .lp-btn-ghost {
+        display: none;
     }
 
-    .lp-root {
-        max-height: 90vh;
+    .lp-btn {
+        width: 250px;
+        text-align: center;
+        font-size: 12px;
+        padding-top: 16px;
+    }
+
+    .lp-hero {
+        height: calc(105vh - 56px);
+        top: 54px
+    }
+
+    .lp-title {
+        font-size: 65px;
+        top: 25px;
+    }
+
+    .lp-cta-row {
+        bottom: 178px;
+    }
+
+    .lp-card {
+        left: 207px;
+        top: 38%;
     }
 
     .lp-model-wrap {
         height: 65%;
-        left: 37%;
-        bottom: 112px;
+        left: 26%;
+        bottom: 176px;
     }
 
-    .lp-cta-row {
-        bottom: 105px;
+    .lp-card-footer {
+        padding: 0px 14px 9px;
+    }
+
+    .lp-card-header {
+        padding: 9px 15px 3px;
     }
 
     .lp-card {
-        left: 191px;
-        top: 43%;
+        right: 105px;
+        width: 155px;
     }
-
 }

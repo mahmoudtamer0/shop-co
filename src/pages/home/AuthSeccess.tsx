@@ -16,7 +16,6 @@ function AuthSuccess() {
 
             setTimeout(() => {
                 navigate(redirectTo, { replace: true });
-                localStorage.removeItem("redirectAfterLogin");
             }, 100);
 
         } else {

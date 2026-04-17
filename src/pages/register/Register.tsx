@@ -86,10 +86,8 @@ export default function Register() {
         navigate("/verify-otp")
     };
 
-    const handleGoogle = async () => {
+    const handleGoogle = () => {
         setGoogleLoading(true);
-        const from = location.state?.from?.pathname || "/";
-        localStorage.setItem("redirectAfterLogin", from);
         window.location.href = `${import.meta.env.VITE_API_URL}/users/google`;
     };
 

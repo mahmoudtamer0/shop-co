@@ -5,6 +5,7 @@ function ProtectedRoute({ children }: any) {
     const location = useLocation();
 
     if (!token) {
+        localStorage.setItem("redirectAfterLogin", location.pathname);
         return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
