@@ -1,50 +1,79 @@
 /* ══ BASE ══ */
+.navbar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    background: #fff;
+
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.nav-hide {
+    transform: translateY(-100%);
+    opacity: 0;
+}
+
+.nav-show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
 .logo a {
-    font-weight: bold;
-    font-size: 30px;
-    color: black;
-    font-family: "Archivo Black", sans-serif;
+    font-weight: 700;
+    font-size: 28px;
+    color: #000;
+    font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     text-decoration: none;
+    letter-spacing: -0.5px;
 }
 
 /* ══ NAVBAR LAYOUT ══ */
 .nav-container {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 20px;
     width: 100%;
+    padding: 16px 40px !important;
 }
 
 .nav-links-div {
-    display: flex;
+    display: flex !important;
     flex-direction: row;
-    gap: 10px;
-    width: 30%;
+    gap: 35px;
+    width: auto;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
 }
 
 .nav-links-div a {
-    color: black;
+    color: #000;
     text-decoration: none;
     font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    transition: color 0.3s ease;
+    font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-.nav-links-div>a {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+
 
 .nav-icons-div {
     display: flex;
     flex-direction: row;
-    gap: 15px;
+    gap: 20px;
     align-items: center;
+    margin-left: auto;
 }
 
 /* ══ SEARCH ══ */
 .navbar {
     padding: 0 !important;
     flex-wrap: wrap !important;
+    background: #fff;
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .navbar .nav-container {
@@ -52,33 +81,31 @@
     flex-wrap: nowrap !important;
     align-items: center !important;
     width: 100% !important;
-    padding: 12px 16px;
-}
-
-/* Bootstrap بيحط display:none على الـ collapse، نمنع ده */
-.nav-links-div {
-    display: flex !important;
-    flex-direction: row;
-    gap: 20px;
-    width: auto;
-    flex: 1;
-    justify-content: center;
+    padding: 16px 40px !important;
 }
 
 .nav-inp-div {
-    flex: 0 0 38%;
-    max-width: 400px;
+    flex: 0 0 auto;
     position: relative;
+    width: 280px;
 }
 
 .nav-inp-div input {
-    border-radius: 20px;
-    padding: 8px 15px 8px 36px;
-    border: none;
-    background-color: #f1f1f1;
+    border-radius: 24px;
+    padding: 10px 16px 10px 38px;
+    border: 1px solid #e0e0e0;
+    background-color: #f8f8f8;
     width: 100%;
     outline: none;
     font-size: 14px;
+    font-family: "Poppins", sans-serif;
+    transition: all 0.3s ease;
+}
+
+.nav-inp-div input:focus {
+    border-color: #ff5733;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(255, 87, 51, 0.1);
 }
 
 .search-icon-inside {

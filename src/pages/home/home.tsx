@@ -9,11 +9,13 @@ const Home = () => {
     return (
         <>
             <Nav />
-            <Landing />
-            <ProductsHome heading={"NEW ARRIVALS"} filter={""} />
-            <ProductsHome heading={"TOP SELLING"} filter={"sort=best-selling"} />
-            <CatigoriesSection />
-            <Footer />
+            <div style={{ paddingTop: "92px" }}>
+                <Landing />
+                <ProductsHome heading={"NEW ARRIVALS"} filter={""} />
+                <ProductsHome heading={"TOP SELLING"} filter={"sort=best-selling"} />
+                <CatigoriesSection />
+                <Footer />
+            </div>
         </>
     )
 }

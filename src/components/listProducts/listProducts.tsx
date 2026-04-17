@@ -8,7 +8,10 @@ const ListProducts = () => {
     const [products, setProducts] = useState<Product[]>([])
     const [catigories, setCatigories] = useState<Category[]>([])
     const [searchParams, setSearchParams] = useSearchParams();
-    //const [page, setPage] = useState(1)
+    const [minPrice, setMinPrice] = useState(50);
+    const [maxPrice, setMaxPrice] = useState(5000);
+    const [debouncedMin, setDebouncedMin] = useState(minPrice);
+    const [debouncedMax, setDebouncedMax] = useState(maxPrice);
     const [isLoading, setIsLoading] = useState(false)
     const [totalPages, setTotalPages] = useState(1)
     const [totalProducts, setTotalProducts] = useState(0)
@@ -18,6 +21,12 @@ const ListProducts = () => {
     const page = Number(searchParams.get("page")) || 1
     const category = searchParams.get("category") || ""
     const type = searchParams.get("type") || ""
+    const min = searchParams.get("min-price") || "0";
+    const max = searchParams.get("max-price") || "5000";
+    const [openSections, setOpenSections] = useState({
+        category: false,
+        type: false
+    });
     const [filtersOpen, setFiltersOpen] = useState(false)
     useEffect(() => {
         fetch(`${import.meta.env.VITE_API_URL}/categories`).then(data => data.json()).then(data => {
@@ -28,7 +37,7 @@ const ListProducts = () => {
 
     useEffect(() => {
         setIsLoading(true)
-        fetch(`${import.meta.env.VITE_API_URL}/products?limit=12&page=${page}&sort=${sort}&category=${category}&type=${type}`).then(data => data.json()).then(data => {
+        fetch(`${import.meta.env.VITE_API_URL}/products?limit=12&page=${page}&sort=${sort}&category=${category}&type=${type}&minPrice=${debouncedMin}&maxPrice=${debouncedMax}`).then(data => data.json()).then(data => {
             setProducts(data.data)
             setTotalPages(data.totalPages);
             setTotalProducts(data.totalProducts)
@@ -40,16 +49,35 @@ const ListProducts = () => {
         window.scrollTo({
             top: 0
         })
-    }, [page, sort, category, type])
+    }, [page, sort, category, type, debouncedMin, debouncedMax])
 
 
-
+    const toggleSection = (section: "category" | "type") => {
+        setOpenSections(prev => ({
+            ...prev,
+            [section]: !prev[section]
+        }));
+    };
 
 
     useEffect(() => {
         document.body.style.overflow = filtersOpen ? 'hidden' : ''
         return () => { document.body.style.overflow = '' }
     }, [filtersOpen])
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setDebouncedMin(minPrice);
+            setDebouncedMax(maxPrice);
+        }, 500); // نص ثانية بعد ما يوقف
+
+        return () => clearTimeout(timeout);
+    }, [minPrice, maxPrice]);
+
+    useEffect(() => {
+        setMinPrice(Number(min));
+        setMaxPrice(Number(max));
+    }, [min, max]);
     return (
         <>
             <div className='container'>
@@ -89,7 +117,13 @@ const ListProducts = () => {
 
 
                         <div className="filter-section">
-                            <ul className="cat-list">
+                            <div className="filter-title" onClick={() => toggleSection("category")}>
+                                Category
+                                <svg className={openSections.category ? "rotated" : ""} width="10" height="6">
+                                    <path d="M1 1l4 4 4-4" stroke="#111" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+                                </svg>
+                            </div>
+                            <ul className={`cat-list ${openSections.category ? "open" : ""}`}>
                                 <li onClick={() => {
                                     const params = Object.fromEntries(searchParams.entries());
                                     setSearchParams({
@@ -115,7 +149,13 @@ const ListProducts = () => {
                         </div>
 
                         <div className="filter-section">
-                            <ul className="cat-list">
+                            <div className="filter-title" onClick={() => toggleSection("type")}>
+                                Type
+                                <svg className={openSections.type ? "rotated" : ""} width="10" height="6">
+                                    <path d="M1 1l4 4 4-4" stroke="#111" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+                                </svg>
+                            </div>
+                            <ul className={`cat-list ${openSections.type ? "open" : ""}`}>
                                 <li onClick={() => {
                                     const params = Object.fromEntries(searchParams.entries());
                                     setSearchParams({
@@ -143,13 +183,33 @@ const ListProducts = () => {
                                 Price
                                 <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="#111" strokeWidth="1.5" fill="none" strokeLinecap="round" /></svg>
                             </div>
+
                             <div className="price-labels">
-                                <span>$50</span><span>$200</span>
+                                <span>${minPrice}</span>
+                                <span>${maxPrice}</span>
                             </div>
-                            <div className="range-track">
-                                <div className="range-fill"></div>
-                                <div className="range-thumb left"></div>
-                                <div className="range-thumb right"></div>
+                            <div className="range-inputs">
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="2000"
+                                    value={minPrice}
+                                    onChange={(e) => {
+                                        const value = Number(e.target.value);
+                                        if (value < maxPrice) setMinPrice(value);
+                                    }}
+                                />
+
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="2000"
+                                    value={maxPrice}
+                                    onChange={(e) => {
+                                        const value = Number(e.target.value);
+                                        if (value > minPrice) setMaxPrice(value);
+                                    }}
+                                />
                             </div>
                         </div>
 
@@ -161,15 +221,10 @@ const ListProducts = () => {
                                 <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="#111" strokeWidth="1.5" fill="none" strokeLinecap="round" /></svg>
                             </div>
                             <div className="size-grid">
-                                <button className="size-btn" >XX-Small</button>
-                                <button className="size-btn" >X-Small</button>
                                 <button className="size-btn" >Small</button>
                                 <button className="size-btn" >Medium</button>
-                                <button className="size-btn active" >Large</button>
+                                <button className="size-btn" >Large</button>
                                 <button className="size-btn" >X-Large</button>
-                                <button className="size-btn" >XX-Large</button>
-                                <button className="size-btn" >3X-Large</button>
-                                <button className="size-btn" >4X-Large</button>
                             </div>
                         </div>
 

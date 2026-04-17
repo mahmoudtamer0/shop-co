@@ -7,8 +7,10 @@ const CartPage = () => {
     return (
         <>
             <Nav />
-            <Cart />
-            <Footer />
+            <div style={{ paddingTop: "92px" }}>
+                <Cart />
+                <Footer />
+            </div>
         </>
     )
 }

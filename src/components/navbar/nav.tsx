@@ -27,6 +27,8 @@ const Nav = () => {
     const [shopOpen, setShopOpen] = useState(false)
     const shopRef = useRef<HTMLDivElement>(null)
     const [cartCount, setCartCount] = useState(0);
+    const [showNav, setShowNav] = useState(true);
+    const lastScrollY = useRef(0);
 
     const token = localStorage.getItem("token");
 
@@ -97,14 +99,33 @@ const Nav = () => {
         setSearch("")
     }
 
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+
+            if (currentScrollY < 50) {
+                setShowNav(true);
+            } else if (currentScrollY > lastScrollY.current) {
+                setShowNav(false);
+            } else {
+                setShowNav(true);
+            }
+
+            lastScrollY.current = currentScrollY;
+        };
+
+        window.addEventListener("scroll", handleScroll);
+
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
     return (
         <>
-            <nav className="navbar navbar-expand-lg p-3">
-                <div className="container-fluid nav-container">
+            <nav className={`navbar navbar-expand-lg p-2 ${showNav ? "nav-show" : "nav-hide"}`}>
+                <div className=" nav-container">
                     <div className='logo'><Link to={'/'}>SHOP.CO</Link></div>
 
                     <div className='nav-links-div'>
-                        {/* Shop Dropdown */}
                         <div
                             className='shop-dropdown-wrapper'
                             ref={shopRef}
@@ -205,7 +226,7 @@ const Nav = () => {
                                 {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
                             </Link>
                         </div>
-                        {!token ? <Link to={""} className='signInLink'>sign-in</Link> : <div><i className="fa-regular fa-circle-user"></i></div>}
+                        {!token ? <Link to={"/login"} className='signInLink'>sign-in</Link> : <div><i className="fa-regular fa-circle-user"></i></div>}
                     </div>
 
                     <div className="mobile-actions">
@@ -323,7 +344,7 @@ const Nav = () => {
                     })}
                 </ul>
                 <div className="drawer-footer">
-                    {!token ? <Link to={""} className='signInLink-mobile'>sign-in</Link> : <div className="drawer-icon">
+                    {!token ? <Link to={"/login"} className='signInLink-mobile'>sign-in</Link> : <div className="drawer-icon">
                         <i className="fa-regular fa-circle-user"></i> My Account
                     </div>}
                 </div>

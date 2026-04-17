@@ -567,6 +567,17 @@ input[type="range"] {
     line-height: 1;
 }
 
+.cat-list {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.cat-list.open {
+    max-height: 500px;
+    /* رقم كبير عشان يكفي المحتوى */
+}
+
 /* ══ RESPONSIVE ══ */
 @media (max-width: 768px) {
     .breadcrumb-bar {

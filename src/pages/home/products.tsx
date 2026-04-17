@@ -7,8 +7,10 @@ const Products = () => {
     return (
         <>
             <Nav />
-            <ListProducts />
-            <Footer />
+            <div style={{ paddingTop: "92px" }}>
+                <ListProducts />
+                <Footer />
+            </div>
         </>
     )
 }

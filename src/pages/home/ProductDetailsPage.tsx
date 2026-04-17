@@ -6,8 +6,10 @@ const ProductDetailsPage = () => {
     return (
         <>
             <Nav />
-            <ProductDetails />
-            <Footer />
+            <div style={{ paddingTop: "92px" }}>
+                <ProductDetails />
+                <Footer />
+            </div>
         </>
     )
 }

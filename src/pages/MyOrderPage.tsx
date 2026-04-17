@@ -7,8 +7,10 @@ const MyOrderPage = () => {
     return (
         <>
             <Nav />
-            <MyOrders />
-            <Footer />
+            <div style={{ paddingTop: "92px" }}>
+                <MyOrders />
+                <Footer />
+            </div>
         </>
     )
 }
