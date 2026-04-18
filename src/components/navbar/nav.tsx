@@ -121,7 +121,7 @@ const Nav = () => {
 
     return (
         <>
-            <nav className={`navbar navbar-expand-lg p-2 ${showNav ? "nav-show" : "nav-hide"}`}>
+            <nav className={`navbar navbar-expand-lg ${showNav ? "nav-show" : "nav-hide"}`}>
                 <div className=" nav-container">
                     <div className='logo'><Link to={'/'}>SHOP.CO</Link></div>
 

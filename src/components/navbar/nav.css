@@ -1,5 +1,6 @@
 /* ══ BASE ══ */
 .navbar {
+    padding: 0 50px !important;
     position: fixed !important;
     top: 0;
     left: 0;
@@ -70,7 +71,7 @@
 
 /* ══ SEARCH ══ */
 .navbar {
-    padding: 0 !important;
+    padding: 0px 50px !important;
     flex-wrap: wrap !important;
     background: #fff;
     border-bottom: 1px solid #f0f0f0;
