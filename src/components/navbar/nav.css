@@ -535,6 +535,10 @@
         width: 100%;
     }
 
+    .navbar {
+        padding: 0 !important;
+    }
+
     .logo {
         font-size: 22px;
     }

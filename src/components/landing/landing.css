@@ -359,13 +359,17 @@
 
     .lp-model-wrap {
         height: 65%;
-        left: 29%;
+        left: 34%;
         bottom: 176px;
 
     }
 
+    .lp-header {
+        padding: 18px 11px 0;
+    }
+
     .lp-title {
-        font-size: 77px;
+        font-size: 76px;
         top: 95px;
     }
 
