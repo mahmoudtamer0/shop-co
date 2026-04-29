@@ -8,11 +8,22 @@ import SectionTitle from '../sectionTitle/SectionTitle';
 
 const ProductsHome = ({ heading, filter }: { heading: string, filter: string }) => {
     const [products, setProducts] = useState<Product[]>([])
-    useEffect(() => {
+
+    const [isLoading, setIsLoading] = useState(false)
+
+
+    const fetchProducts = async () => {
+        setIsLoading(true);
         fetch(`${import.meta.env.VITE_API_URL}/products?limit=4&${filter}`).then(data => data.json()).then(data => {
             setProducts(data.data)
         }
-        )
+        ).finally(() => {
+            setIsLoading(false)
+        })
+    }
+
+    useEffect(() => {
+        fetchProducts()
     }, [])
 
 
@@ -25,13 +36,29 @@ const ProductsHome = ({ heading, filter }: { heading: string, filter: string }) 
                 <div className="row g-4">
 
 
-                    {products.length > 0 &&
+                    {!isLoading ?
                         products?.map((product: Product) => (
                             <div key={product._id} className="col-6 col-md-3">
 
                                 <ProductCard product={product} />
                             </div>
                         ))
+                        :
+                        <div className="product-grid">
+                            {
+                                [1, 2, 3].map(i => (
+                                    <div className="skeleton-card" key={i}>
+                                        <div className="skeleton-img" />
+                                        <div className="skeleton-body">
+                                            <div className="skeleton-line" />
+                                            <div className="skeleton-line short" />
+                                            <div className="skeleton-line xshort" />
+                                        </div>
+                                    </div>
+                                ))
+                            }
+                        </div>
+
                     }
                 </div>
             </div>
