@@ -18,7 +18,7 @@ const CatigoriesSection = () => {
                 <div className="col-7">
                     <Link to={"/products?category=womens"} className="style-card card-wide">
                         <span className="card-label">Womens</span>
-                        <img src="https://fastarz.com/wp-content/uploads/2024/01/AdobeStock_171195989-min.jpg" alt="Formal" />
+                        <img src="https://cdn.mos.cms.futurecdn.net/8NMEzSoSZPP9Lu9sS7qAri.jpg" alt="Formal" />
                     </Link>
                 </div>
             </div>
